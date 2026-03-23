@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your AI Footprint — Activity 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e0c;
+    --bg2: #111714;
+    --bg3: #181f1b;
+    --green: #3ddc84;
+    --green2: #1faa5e;
+    --amber: #f5a623;
+    --red: #e84040;
+    --text: #e8ede9;
+    --muted: #6b7d70;
+    --border: rgba(255,255,255,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 1.25rem 4rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 2.5rem 0 2rem;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 0.5px solid var(--green2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 8vw, 42px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  h1 span { color: var(--green); }
+  .header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── STEP INDICATOR ── */
+  .steps {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2rem;
+  }
+  .step-dot {
+    flex: 1; height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+  .step-dot.done { background: var(--green2); }
+  .step-dot.active { background: var(--green); }
+
+  /* ── SCREENS ── */
+  .screen { display: none; animation: fadeUp 0.35s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .q-text {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .q-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ── SLIDER ── */
+  .slider-val-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .slider-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--green);
+    transition: color 0.3s;
+  }
+  .slider-unit { font-size: 14px; color: var(--muted); }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    outline: none;
+    margin-bottom: 0.4rem;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    background: var(--green);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── CO2 READOUT ── */
+  .co2-block {
+    background: var(--bg3);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .co2-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 0;
+  }
+  .co2-row strong {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 13px;
+  }
+  .co2-divider { border: none; border-top: 0.5px solid var(--border); margin: 8px 0; }
+  .co2-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .co2-total-label { font-size: 12px; color: var(--muted); }
+  .co2-total-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+  .pill-low  { background: rgba(61,220,132,0.12); color: var(--green); }
+  .pill-med  { background: rgba(245,166,35,0.12);  color: var(--amber); }
+  .pill-high { background: rgba(232,64,64,0.12);   color: var(--red); }
+
+  /* ── EQUIV BAR ── */
+  .equiv {
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--bg3);
+    border-radius: 10px;
+    border-left: 3px solid var(--green);
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    transition: border-color 0.3s;
+  }
+  .equiv-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── MULTIPLE CHOICE ── */
+  .choice-list { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    text-align: left;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .choice-btn:hover { border-color: var(--green2); background: rgba(61,220,132,0.05); }
+  .choice-btn.selected {
+    border-color: var(--green);
+    background: rgba(61,220,132,0.1);
+    color: var(--green);
+  }
+  .choice-btn .choice-letter {
+    display: inline-block;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--bg2);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 10px;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .choice-btn.selected .choice-letter {
+    background: var(--green);
+    color: #000;
+  }
+
+  /* ── CHECKBOX ── */
+  .cb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .cb-btn {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 0.9rem;
+    text-align: left;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.35;
+  }
+  .cb-btn:hover { border-color: var(--green2); color: var(--text); }
+  .cb-btn.selected { border-color: var(--green); color: var(--green); background: rgba(61,220,132,0.06); }
+
+  /* ── TEXT INPUT ── */
+  .word-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    font-size: 18px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--green);
+    outline: none;
+    text-align: center;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s;
+  }
+  .word-input::placeholder { color: var(--muted); font-weight: 400; font-size: 14px; letter-spacing: 0; }
+  .word-input:focus { border-color: var(--green2); }
+
+  /* ── NAV BUTTON ── */
+  .nav-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+  .btn-next {
+    flex: 1;
+    padding: 1rem;
+    background: var(--green);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .btn-next:hover { background: #50e897; transform: translateY(-1px); }
+  .btn-next:active { transform: scale(0.98); }
+  .btn-back {
+    padding: 1rem 1.2rem;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-back:hover { color: var(--text); border-color: var(--muted); }
+
+  /* ── RESULTS ── */
+  .result-hero {
+    text-align: center;
+    padding: 2rem 0 1.5rem;
+  }
+  .result-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+    transition: color 0.3s;
+  }
+  .result-unit { font-size: 16px; color: var(--muted); margin-bottom: 1.5rem; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+  .result-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+  .rc-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .rc-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+  .rc-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .equiv-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+  .eq-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+  }
+  .eq-icon { font-size: 20px; flex-shrink: 0; }
+  .eq-text { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .eq-text strong { color: var(--text); font-weight: 500; }
+  .source-note {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border);
+    font-style: italic;
+  }
+
+  /* ── SHARE ROW ── */
+  .share-btn {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    color: var(--green);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border: 0.5px solid var(--green2);
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.15s;
+  }
+  .share-btn:hover { background: rgba(61,220,132,0.06); }
+
+  /* ── CLASS CONTEXT ── */
+  .context-bar {
+    background: rgba(61,220,132,0.05);
+    border: 0.5px solid var(--green2);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .context-bar .ctx-label { font-size: 10px; color: var(--green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tag">Activity 1 · ISP Public Health</div>
+    <h1>Your AI <span>Carbon</span> Footprint</h1>
+    <p class="header-sub">Every prompt you send travels to a data center. Let's see what that costs — in CO₂, in water, and in communities like South Chicago.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step-dot active" id="dot0"></div>
+    <div class="step-dot" id="dot1"></div>
+    <div class="step-dot" id="dot2"></div>
+    <div class="step-dot" id="dot3"></div>
+    <div class="step-dot" id="dot4"></div>
+  </div>
+
+  <!-- ══ SCREEN 0: Daily usage + live CO2 ══ -->
+  <div class="screen active" id="s0">
+    <div class="card">
+      <div class="card-label">Question 1 of 4</div>
+      <div class="q-text">How many times did you use AI in the last 24 hours?</div>
+      <div class="q-hint">ChatGPT, Claude, Gemini, Copilot, image tools — everything counts.</div>
+      <div class="slider-val-row">
+        <div class="slider-big" id="s0val">5</div>
+        <div class="slider-unit">times today</div>
+      </div>
+      <input type="range" min="0" max="40" value="5" id="s0slider" oninput="updateS0()">
+      <div class="slider-labels"><span>0×</span><span>10×</span><span>20×</span><span>30×</span><span>40+×</span></div>
+      <div class="co2-block">
+        <div class="co2-row">
+          <span>Est. energy per text query</span>
+          <strong>~0.001–0.01 kWh</strong>
+        </div>
+        <div class="co2-row">
+          <span>Your energy today</span>
+          <strong id="s0kwh">0.025 kWh</strong>
+        </div>
+        <div class="co2-row">
+          <span>US avg carbon intensity</span>
+          <strong>386 g CO₂/kWh</strong>
+        </div>
+        <hr class="co2-divider">
+        <div class="co2-total-row">
+          <span class="co2-total-label">Your CO₂ today</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="co2-total-val" id="s0co2">9.7 g</span>
+            <span class="pill pill-low" id="s0pill">low</span>
+          </div>
+        </div>
+      </div>
+      <div class="equiv" id="s0equiv">
+        <div class="equiv-label">That's roughly equivalent to…</div>
+        <span id="s0eqtext">boiling a kettle of water twice</span>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-next" onclick="goTo(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 1: Weekly + use cases ══ -->
+  <div class="screen" id="s1">
+    <div class="card">
+      <div class="card-label">Question 2 of 4</div>
+      <div class="q-text">How many times did you use AI this week?</div>
+      <div class="slider-val-row">
+        <div class="slider-big" id="s1val">20</div>
+        <div class="slider-unit">times this week</div>
+      </div>
+      <input type="range" min="0" max="100" value="20" id="s1slider" oninput="updateS1()">
+      <div class="slider-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100+</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Question 2b · select all that apply</div>
+      <div class="q-text">What do you use AI for?</div>
+      <div class="q-hint" style="margin-bottom:0.75rem">Tap all that apply.</div>
+      <div class="cb-grid" id="useGrid">
+        <button class="cb-btn" onclick="toggleCb(this)">Writing &amp; editing</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Coding / debug</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Research</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Image generation</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Homework help</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Entertainment</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Healthcare info</button>
+        <button class="cb-btn" onclick="toggleCb(this)">Work tasks</button>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo(0)">←</button>
+      <button class="btn-next" onclick="goTo(2)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2: Awareness ══ -->
+  <div class="screen" id="s2">
+    <div class="card">
+      <div class="card-label">Question 3 of 4 · Environmental awareness</div>
+      <div class="q-text">Before today, how much had you thought about the environmental impact of AI?</div>
+      <div class="q-hint">Think: energy use, water consumption, pollution from data centers.</div>
+      <div class="choice-list" id="envAware">
+        <button class="choice-btn" onclick="pickChoice('envAware',this)"><span class="choice-letter">A</span>Never crossed my mind</button>
+        <button class="choice-btn" onclick="pickChoice('envAware',this)"><span class="choice-letter">B</span>Heard about it but never really thought about it</button>
+        <button class="choice-btn" onclick="pickChoice('envAware',this)"><span class="choice-letter">C</span>I've thought about it a little</button>
+        <button class="choice-btn" onclick="pickChoice('envAware',this)"><span class="choice-letter">D</span>I think about it regularly</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Community consent</div>
+      <div class="q-text">Should communities near data centers have formal say in whether they're built?</div>
+      <div class="choice-list" id="consent">
+        <button class="choice-btn" onclick="pickChoice('consent',this)"><span class="choice-letter">A</span>Yes — community consent must be legally required</button>
+        <button class="choice-btn" onclick="pickChoice('consent',this)"><span class="choice-letter">B</span>Somewhat — consultation yes, veto power no</button>
+        <button class="choice-btn" onclick="pickChoice('consent',this)"><span class="choice-letter">C</span>No — economic decisions belong to government &amp; companies</button>
+        <button class="choice-btn" onclick="pickChoice('consent',this)"><span class="choice-letter">D</span>Not sure</button>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo(1)">←</button>
+      <button class="btn-next" onclick="goTo(3)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3: One word ══ -->
+  <div class="screen" id="s3">
+    <div class="card">
+      <div class="card-label">Question 4 of 4</div>
+      <div class="q-text">In one word — how do you feel about AI data centers being placed in historically redlined communities like South Chicago?</div>
+      <div class="q-hint">Your word will appear in the class word cloud on screen.</div>
+      <input class="word-input" id="wordInput" type="text" maxlength="20" placeholder="type your word…">
+    </div>
+    <div class="context-bar">
+      <div class="ctx-label">Context for today's case</div>
+      The Illinois Quantum &amp; Microelectronics Park is a $9B AI campus planned for South Chicago — a Black and Latino neighborhood with 100+ years of industrial pollution. Residents were never given a Community Benefits Agreement.
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo(2)">←</button>
+      <button class="btn-next" onclick="goTo(4)">See my footprint →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4: RESULTS ══ -->
+  <div class="screen" id="s4">
+    <div class="result-hero">
+      <div class="result-num" id="rNum">9.7</div>
+      <div class="result-unit">grams of CO₂ <em>today</em></div>
+      <span class="pill pill-low" id="rPill">low</span>
+    </div>
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="rc-label">Annual projection</div>
+        <div class="rc-val" id="rAnnual">3.5 kg</div>
+        <div class="rc-sub">at today's pace</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Weekly CO₂</div>
+        <div class="rc-val" id="rWeekly">68 g</div>
+        <div class="rc-sub">from your queries</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Water consumed</div>
+        <div class="rc-val" id="rWater">0.5 L</div>
+        <div class="rc-sub">for cooling (today)</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Class × 20 students</div>
+        <div class="rc-val" id="rClass">194 g</div>
+        <div class="rc-sub">CO₂ today combined</div>
+      </div>
+    </div>
+
+    <div class="equiv-list" id="equivList"></div>
+
+    <div class="context-bar" style="margin-top:0.5rem">
+      <div class="ctx-label">Scale this up</div>
+      A single large data center consumes as much electricity as 80,000 homes. By 2030, US data centers could contribute to ~1,300 deaths/year from air pollution — disproportionately in communities of color near these facilities.
+    </div>
+
+    <div class="source-note">
+      Estimates: ~0.5 g CO₂ per text query (avg across GPT-4 class models), ~10 mL water/query for cooling. Image generation 10–40× higher. Sources: Goldman Sachs (2024), IEA (2024), Luccioni et al. (2023), techpolicy.press (2025).
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  const equivData = [
+    { max: 2,   icon: '🔋', text: '<strong>Charging your phone</strong> for about 10 minutes' },
+    { max: 6,   icon: '🫖', text: '<strong>Boiling a kettle</strong> for a cup of tea' },
+    { max: 15,  icon: '🚿', text: '<strong>A 3-minute hot shower</strong> (heating the water)' },
+    { max: 30,  icon: '💡', text: '<strong>A 60W bulb</strong> running for 1 hour' },
+    { max: 60,  icon: '🎬', text: '<strong>Streaming Netflix</strong> in HD for 1 hour' },
+    { max: 150, icon: '🚗', text: '<strong>Driving a car</strong> about 0.5 km' },
+    { max: Infinity, icon: '✈️', text: '<strong>A short flight</strong> equivalent segment' }
+  ];
+
+  function calcCO2(queries) {
+    return Math.round(queries * 0.5 * 10) / 10;
+  }
+
+  function getLevel(g) {
+    if (g < 8)  return { label: 'low',      pill: 'pill-low',  color: '#3ddc84' };
+    if (g < 20) return { label: 'moderate', pill: 'pill-med',  color: '#f5a623' };
+    return             { label: 'high',     pill: 'pill-high', color: '#e84040' };
+  }
+
+  function getEquiv(g) {
+    for (let e of equivData) if (g <= e.max) return e;
+    return equivData[equivData.length - 1];
+  }
+
+  function updateS0() {
+    const v = +document.getElementById('s0slider').value;
+    const co2 = calcCO2(v);
+    const kwh = (v * 0.001).toFixed(3);
+    const lv = getLevel(co2);
+    const eq = getEquiv(co2);
+
+    document.getElementById('s0val').textContent = v;
+    document.getElementById('s0val').style.color = lv.color;
+    document.getElementById('s0kwh').textContent = kwh + ' kWh';
+    document.getElementById('s0co2').textContent = co2 + ' g';
+    document.getElementById('s0co2').style.color = lv.color;
+    document.getElementById('s0pill').className = 'pill ' + lv.pill;
+    document.getElementById('s0pill').textContent = lv.label;
+    document.getElementById('s0equiv').style.borderLeftColor = lv.color;
+    document.getElementById('s0eqtext').textContent = eq.icon + '  ' + eq.text.replace(/<[^>]+>/g, '');
+  }
+
+  function updateS1() {
+    const v = +document.getElementById('s1slider').value;
+    document.getElementById('s1val').textContent = v;
+  }
+
+  function pickChoice(groupId, btn) {
+    document.querySelectorAll('#' + groupId + ' .choice-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  function toggleCb(btn) { btn.classList.toggle('selected'); }
+
+  function buildResults() {
+    const daily = +document.getElementById('s0slider').value;
+    const weekly = +document.getElementById('s1slider').value;
+    const co2d = calcCO2(daily);
+    const co2w = calcCO2(weekly);
+    const annual = Math.round(co2d * 365 / 100) / 10;
+    const water = Math.round(daily * 10) / 100;
+    const classCO2 = Math.round(co2d * 20 * 10) / 10;
+    const lv = getLevel(co2d);
+
+    document.getElementById('rNum').textContent = co2d;
+    document.getElementById('rNum').style.color = lv.color;
+    document.getElementById('rPill').className = 'pill ' + lv.pill;
+    document.getElementById('rPill').textContent = lv.label;
+    document.getElementById('rAnnual').textContent = annual + ' kg';
+    document.getElementById('rWeekly').textContent = co2w + ' g';
+    document.getElementById('rWater').textContent = water + ' L';
+    document.getElementById('rClass').textContent = classCO2 + ' g';
+
+    const el = document.getElementById('equivList');
+    el.innerHTML = '';
+    const eq = getEquiv(co2d);
+    const items = [
+      { icon: eq.icon, text: eq.text + ' — that\'s your <strong>daily</strong> AI use.' },
+      { icon: '💧', text: 'Your queries today used <strong>' + water + ' L of water</strong> for data center cooling.' },
+      { icon: '🏙️', text: 'If every student in class used AI at your rate: <strong>' + classCO2 + ' g CO₂</strong> today combined.' }
+    ];
+    items.forEach(i => {
+      el.innerHTML += '<div class="eq-item"><div class="eq-icon">' + i.icon + '</div><div class="eq-text">' + i.text + '</div></div>';
+    });
+  }
+
+  function goTo(n) {
+    if (n === 4) buildResults();
+    document.querySelectorAll('.screen').forEach((s, i) => {
+      s.classList.toggle('active', i === n);
+    });
+    document.querySelectorAll('.step-dot').forEach((d, i) => {
+      d.classList.toggle('done', i < n);
+      d.classList.toggle('active', i === n);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateS0();
+</script>
+</body>
+</html>
