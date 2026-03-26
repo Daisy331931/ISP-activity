@@ -401,17 +401,26 @@ async function submitAndContinue(){
   status.className='submit-status sending';
   status.textContent='Saving your response…';
   try{
-    await fetch(SHEET_URL,{
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(collectData()),
+    const d=collectData();
+    const params=new URLSearchParams({
+      dailyUses:    d.dailyUses,
+      dailyCO2:     d.dailyCO2,
+      weeklyUses:   d.weeklyUses,
+      weeklyCO2:    d.weeklyCO2,
+      useCases:     (d.useCases||[]).join(', '),
+      envAwareness: d.envAwareness,
+      communityConsent: d.communityConsent,
+      oneWord:      d.oneWord,
+      annualCO2:    d.annualCO2,
+      waterToday:   d.waterToday,
     });
+    await fetch(SHEET_URL+'?'+params.toString(), {mode:'no-cors'});
     status.className='submit-status success';
     status.textContent='✓ Response saved — loading your footprint…';
     setTimeout(()=>go(4),900);
   }catch(err){
     status.className='submit-status error';
-    status.textContent='Could not save — check your connection. Showing results anyway.';
+    status.textContent='Could not save — check connection. Showing results anyway.';
     setTimeout(()=>go(4),1500);
   }
   btn.disabled=false;
