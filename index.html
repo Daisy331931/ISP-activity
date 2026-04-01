@@ -30,11 +30,547 @@ body {
   line-height: 1.6;
   min-height: 100vh;
 }
-.page { max-width: 440px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+.page { max-width: 480px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
+/* ── Header ── */
 .header { padding: 2.5rem 0 2rem; }
 .eyebrow {
   font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--accent);
+  text-transform: uppercase; color: var(--accent2); margin-bottom: 0.5rem;
+}
+.header h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2rem; line-height: 1.2; font-weight: 400;
+}
+.header h1 em { font-style: italic; color: var(--accent); }
+.header p { color: var(--ink2); margin-top: 0.6rem; font-size: 14px; }
+
+/* ── Divider ── */
+hr { border: none; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+
+/* ── Question card ── */
+.q-card {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem 1.25rem 1rem;
+  margin-bottom: 1rem;
+}
+.q-label {
+  font-size: 13px; font-weight: 500; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: 0.09em;
+  margin-bottom: 0.35rem;
+}
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 0.9rem; color: var(--ink); }
+
+/* ── Options ── */
+.options { display: flex; flex-direction: column; gap: 0.45rem; }
+.opt {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: var(--paper3); border: 1.5px solid transparent;
+  border-radius: 9px; padding: 0.6rem 0.85rem;
+  cursor: pointer; transition: border-color .15s, background .15s;
+  font-size: 14px; user-select: none;
+}
+.opt input { accent-color: var(--accent); width: 15px; height: 15px; flex-shrink: 0; }
+.opt:has(input:checked) {
+  border-color: var(--accent2);
+  background: rgba(82,183,136,0.12);
+}
+.opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+
+/* ── Submit ── */
+.submit-wrap { margin-top: 1.5rem; }
+.btn-submit {
+  width: 100%; padding: 0.9rem; border: none; border-radius: 11px;
+  background: var(--accent); color: #fff; font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 500; cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.btn-submit:hover { background: #245a42; }
+.btn-submit:active { transform: scale(0.98); }
+.btn-submit:disabled { background: var(--ink3); cursor: not-allowed; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--accent); color: #fff; border-radius: 30px;
+  padding: 0.65rem 1.4rem; font-size: 14px; font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Results section ── */
+#results-section { margin-top: 2.5rem; }
+.results-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.results-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.4rem; font-weight: 400;
+}
+.live-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 500; color: var(--accent2);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent2); animation: pulse 1.4s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(1.4); }
+}
+
+/* ── Stat cards ── */
+.stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+.stat-card {
+  background: var(--paper2); border: 1px solid var(--line);
+  border-radius: 13px; padding: 1rem 1rem 0.85rem; text-align: center;
+}
+.stat-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2rem; line-height: 1; color: var(--accent);
+}
+.stat-sub { font-size: 12px; color: var(--ink3); margin-top: 0.25rem; }
+
+/* ── Carbon highlight ── */
+.carbon-card {
+  background: linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 100%);
+  border-radius: 14px; padding: 1.1rem 1.25rem;
+  color: #fff; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.carbon-icon { font-size: 2rem; flex-shrink: 0; }
+.carbon-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.9rem; font-weight: 400; line-height: 1;
+}
+.carbon-label { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+.carbon-eq { font-size: 12px; opacity: 0.6; font-style: italic; margin-top: 4px; }
+
+/* ── Chart cards ── */
+.chart-card {
+  background: var(--paper2); border: 1px solid var(--line);
+  border-radius: 14px; padding: 1.1rem 1.25rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.chart-title { font-size: 13px; font-weight: 500; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.75rem; }
+.chart-wrap { position: relative; height: 200px; }
+.chart-wrap-sm { position: relative; height: 160px; }
+
+/* ── Awareness bar ── */
+.awareness-wrap { margin-top: 0.5rem; }
+.aw-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+.aw-label { font-size: 13px; color: var(--ink2); min-width: 130px; }
+.aw-bar-bg {
+  flex: 1; height: 10px; background: var(--paper3);
+  border-radius: 99px; overflow: hidden;
+}
+.aw-bar-fill {
+  height: 100%; border-radius: 99px;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.aw-pct { font-size: 13px; font-weight: 500; color: var(--ink2); min-width: 32px; text-align: right; }
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center; padding: 2.5rem 1rem;
+  color: var(--ink3); font-size: 14px;
+}
+.empty-state .icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+
+/* ── Config banner ── */
+.config-banner {
+  background: #fff3cd; border: 1px solid #ffc107;
+  border-radius: 10px; padding: 0.85rem 1rem;
+  font-size: 13px; color: #7a4f00; margin-bottom: 1.5rem;
+  display: none;
+}
+.config-banner.show { display: block; }
+.config-banner strong { display: block; margin-bottom: 0.25rem; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ CONFIG BANNER (shown if Firebase not set up) ══ -->
+  <div class="config-banner" id="configBanner">
+    <strong>⚠️ Firebase not configured</strong>
+    Open this file, find <code>FIREBASE_URL</code> near the top of the &lt;script&gt;, and paste your Firebase Realtime Database URL. See the comment block for step-by-step instructions.
+  </div>
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div class="eyebrow">Activity 1 · ISP</div>
+    <h1>Your <em>AI Footprint</em></h1>
+    <p>Answer honestly — results update live for the whole class to see.</p>
+  </div>
+
+  <hr>
+
+  <!-- ══ FORM ══ -->
+  <form id="surveyForm" novalidate>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-label">Question 1</div>
+      <div class="q-text">How many times have you used AI in the last 24 hours?</div>
+      <div class="options" id="q1-opts">
+        <label class="opt"><input type="radio" name="q1" value="0" required> 0 times — I haven't used it</label>
+        <label class="opt"><input type="radio" name="q1" value="1-5"> 1–5 times</label>
+        <label class="opt"><input type="radio" name="q1" value="6-10"> 6–10 times</label>
+        <label class="opt"><input type="radio" name="q1" value="10+"> More than 10 times</label>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-label">Question 2</div>
+      <div class="q-text">What do you use AI for? <span style="font-weight:300;font-size:13px">(select all that apply)</span></div>
+      <div class="options opt-grid" id="q2-opts">
+        <label class="opt"><input type="checkbox" name="q2" value="Homework / studying"> 📚 Homework</label>
+        <label class="opt"><input type="checkbox" name="q2" value="Writing / editing"> ✍️ Writing</label>
+        <label class="opt"><input type="checkbox" name="q2" value="Coding"> 💻 Coding</label>
+        <label class="opt"><input type="checkbox" name="q2" value="Research"> 🔍 Research</label>
+        <label class="opt"><input type="checkbox" name="q2" value="Creative work"> 🎨 Creative</label>
+        <label class="opt"><input type="checkbox" name="q2" value="Other"> 🔀 Other</label>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-label">Question 3</div>
+      <div class="q-text">Have you considered the environmental or ethical implications of your AI use?</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="q3" value="yes" required> Yes, I think about it regularly</label>
+        <label class="opt"><input type="radio" name="q3" value="sometimes"> Sometimes, but not often</label>
+        <label class="opt"><input type="radio" name="q3" value="no"> No, not really</label>
+        <label class="opt"><input type="radio" name="q3" value="never-thought"> I've never thought about it until now</label>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit" id="submitBtn">Submit my answers →</button>
+    </div>
+  </form>
+
+  <!-- ══ RESULTS SECTION ══ -->
+  <div id="results-section">
+    <hr style="margin: 2rem 0 1.5rem">
+    <div class="results-header">
+      <div class="results-title">Class Results</div>
+      <div class="live-badge"><div class="live-dot"></div>Live</div>
+    </div>
+
+    <!-- Top stats row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-total">—</div>
+        <div class="stat-sub">responses so far</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-daily-avg">—</div>
+        <div class="stat-sub">avg queries / day</div>
+      </div>
+    </div>
+
+    <!-- Carbon card -->
+    <div class="carbon-card">
+      <div class="carbon-icon">🌿</div>
+      <div>
+        <div class="carbon-num" id="stat-co2">— g</div>
+        <div class="carbon-label">estimated CO₂ emitted today (class total)</div>
+        <div class="carbon-eq" id="stat-co2-eq"></div>
+      </div>
+    </div>
+
+    <!-- Usage frequency chart -->
+    <div class="chart-card">
+      <div class="chart-title">AI Usage Frequency (last 24 h)</div>
+      <div class="chart-wrap">
+        <canvas id="chartFreq"></canvas>
+      </div>
+    </div>
+
+    <!-- Use cases chart -->
+    <div class="chart-card">
+      <div class="chart-title">What is AI used for?</div>
+      <div class="chart-wrap">
+        <canvas id="chartUses"></canvas>
+      </div>
+    </div>
+
+    <!-- Environmental awareness -->
+    <div class="chart-card">
+      <div class="chart-title">Environmental Awareness</div>
+      <div class="awareness-wrap" id="awarenessWrap">
+        <div class="empty-state"><div class="icon">⏳</div>Waiting for responses…</div>
+      </div>
+    </div>
+
+  </div><!-- /results-section -->
+</div><!-- /page -->
+
+<!-- Toast -->
+<div class="toast" id="toast">✓ Response recorded!</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   SETUP: Replace the placeholder below with your
+   Firebase Realtime Database URL.
+
+   Steps (takes ~3 minutes):
+   1. Go to https://console.firebase.google.com
+   2. Click "Add project" → give it any name → Continue
+   3. Disable Google Analytics (optional) → Create project
+   4. In the left sidebar: Build → Realtime Database
+   5. Click "Create Database" → choose any location → Start in TEST MODE
+   6. Copy the URL (looks like https://YOUR-NAME-default-rtdb.firebaseio.com)
+   7. Paste it below replacing the placeholder string.
+═══════════════════════════════════════════════════ */
+const FIREBASE_URL = "https://isp-activity-default-rtdb.firebaseio.com";
+// ↑ REPLACE THIS ↑
+
+const DB_PATH = "/isp-activity1";
+
+/* ── Helpers ── */
+const isConfigured = () => !FIREBASE_URL.includes("YOUR-PROJECT");
+
+function showBanner() {
+  document.getElementById("configBanner").classList.add("show");
+}
+
+/* ── Carbon math ──
+   ~0.002 kWh per ChatGPT query (Lancet / IEA estimate)
+   US grid avg: 0.386 kg CO₂ / kWh
+   → ~0.77 g CO₂ per query                              */
+const CO2_PER_QUERY_G = 0.77;
+const QUERY_MIDPOINTS = { "0": 0, "1-5": 3, "6-10": 8, "10+": 15 };
+
+/* ── Chart instances ── */
+let chartFreq = null, chartUses = null;
+
+function initCharts() {
+  const defaults = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    animation: { duration: 500 }
+  };
+  const gridColor = "rgba(26,31,28,0.07)";
+
+  chartFreq = new Chart(document.getElementById("chartFreq"), {
+    type: "bar",
+    data: {
+      labels: ["0 times", "1–5 times", "6–10 times", "10+ times"],
+      datasets: [{
+        data: [0,0,0,0],
+        backgroundColor: ["#b7e4c7","#74c69d","#52b788","#2d6a4f"],
+        borderRadius: 7, borderSkipped: false
+      }]
+    },
+    options: {
+      ...defaults,
+      scales: {
+        y: {
+          beginAtZero: true, ticks: { stepSize: 1, color: "#8a9490", font: { size: 12 } },
+          grid: { color: gridColor }, border: { display: false }
+        },
+        x: { ticks: { color: "#8a9490", font: { size: 12 } }, grid: { display: false }, border: { display: false } }
+      }
+    }
+  });
+
+  chartUses = new Chart(document.getElementById("chartUses"), {
+    type: "bar",
+    data: {
+      labels: ["Homework", "Writing", "Coding", "Research", "Creative", "Other"],
+      datasets: [{
+        data: [0,0,0,0,0,0],
+        backgroundColor: "#52b788",
+        borderRadius: 7, borderSkipped: false
+      }]
+    },
+    options: {
+      ...defaults,
+      indexAxis: "y",
+      scales: {
+        x: {
+          beginAtZero: true, ticks: { stepSize: 1, color: "#8a9490", font: { size: 12 } },
+          grid: { color: gridColor }, border: { display: false }
+        },
+        y: { ticks: { color: "#4a5450", font: { size: 12 } }, grid: { display: false }, border: { display: false } }
+      }
+    }
+  });
+}
+
+/* ── Aggregate results from Firebase snapshot ── */
+function aggregate(data) {
+  const freq   = { "0": 0, "1-5": 0, "6-10": 0, "10+": 0 };
+  const uses   = { "Homework / studying":0, "Writing / editing":0, "Coding":0, "Research":0, "Creative work":0, "Other":0 };
+  const aware  = { yes:0, sometimes:0, no:0, "never-thought":0 };
+  let total = 0;
+
+  Object.values(data || {}).forEach(r => {
+    total++;
+    if (r.q1 && freq[r.q1] !== undefined) freq[r.q1]++;
+    if (Array.isArray(r.q2)) r.q2.forEach(u => { if (uses[u] !== undefined) uses[u]++; });
+    if (r.q3 && aware[r.q3] !== undefined) aware[r.q3]++;
+  });
+
+  // Avg daily queries
+  let totalQueries = 0;
+  Object.entries(freq).forEach(([k,v]) => { totalQueries += v * QUERY_MIDPOINTS[k]; });
+  const avgQueries = total > 0 ? (totalQueries / total).toFixed(1) : "—";
+  const co2Total   = (totalQueries * CO2_PER_QUERY_G).toFixed(1);
+  const co2Eq      = totalQueries > 0
+    ? `≈ charging ${Math.round(totalQueries * 0.002 * 1000 / 3.7)}% of a phone battery`
+    : "";
+
+  return { freq, uses, aware, total, avgQueries, co2Total, co2Eq };
+}
+
+/* ── Render results ── */
+function renderResults(agg) {
+  document.getElementById("stat-total").textContent   = agg.total || "—";
+  document.getElementById("stat-daily-avg").textContent = agg.avgQueries;
+  document.getElementById("stat-co2").textContent     = agg.total ? `${agg.co2Total} g` : "— g";
+  document.getElementById("stat-co2-eq").textContent  = agg.co2Eq;
+
+  if (!chartFreq) initCharts();
+
+  // Frequency chart
+  chartFreq.data.datasets[0].data = [
+    agg.freq["0"], agg.freq["1-5"], agg.freq["6-10"], agg.freq["10+"]
+  ];
+  chartFreq.update();
+
+  // Use-case chart
+  const useKeys = ["Homework / studying","Writing / editing","Coding","Research","Creative work","Other"];
+  chartUses.data.datasets[0].data = useKeys.map(k => agg.uses[k]);
+  chartUses.update();
+
+  // Awareness bars
+  const awarenessWrap = document.getElementById("awarenessWrap");
+  if (agg.total === 0) {
+    awarenessWrap.innerHTML = `<div class="empty-state"><div class="icon">⏳</div>Waiting for responses…</div>`;
+    return;
+  }
+  const awareItems = [
+    { label: "Yes, regularly",       key: "yes",           color: "#2d6a4f" },
+    { label: "Sometimes",             key: "sometimes",     color: "#52b788" },
+    { label: "Not really",            key: "no",            color: "#e07c24" },
+    { label: "Never thought about it",key: "never-thought", color: "#c1441a" },
+  ];
+  awarenessWrap.innerHTML = awareItems.map(item => {
+    const pct = agg.total ? Math.round((agg.aware[item.key] / agg.total) * 100) : 0;
+    return `
+      <div class="aw-row">
+        <div class="aw-label">${item.label}</div>
+        <div class="aw-bar-bg">
+          <div class="aw-bar-fill" style="width:${pct}%;background:${item.color}"></div>
+        </div>
+        <div class="aw-pct">${pct}%</div>
+      </div>`;
+  }).join("");
+}
+
+/* ── Firebase: listen for realtime updates ── */
+function startListening() {
+  if (!isConfigured()) return;
+
+  const url = `${FIREBASE_URL}${DB_PATH}.json`;
+
+  // Polling every 4 seconds (simple, no SSE required for GitHub Pages)
+  const poll = () => {
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        const agg = aggregate(data);
+        renderResults(agg);
+      })
+      .catch(err => console.warn("Poll error:", err));
+  };
+
+  poll();
+  setInterval(poll, 4000);
+}
+
+/* ── Submit form ── */
+document.getElementById("surveyForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  if (!isConfigured()) {
+    showBanner();
+    return;
+  }
+
+  const form = e.target;
+  const btn  = document.getElementById("submitBtn");
+
+  // Validate Q1
+  const q1 = form.q1.value;
+  if (!q1) { alert("Please answer Question 1."); return; }
+
+  // Q2 checkboxes
+  const q2 = Array.from(form.querySelectorAll("input[name='q2']:checked")).map(i => i.value);
+
+  // Validate Q3
+  const q3El = form.querySelector("input[name='q3']:checked");
+  if (!q3El) { alert("Please answer Question 3."); return; }
+  const q3 = q3El.value;
+
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+
+  const payload = { q1, q2, q3, ts: Date.now() };
+
+  try {
+    await fetch(`${FIREBASE_URL}${DB_PATH}.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    // Disable form after submit
+    form.querySelectorAll("input, button").forEach(el => el.disabled = true);
+    btn.textContent = "✓ Submitted";
+    btn.style.background = "var(--accent2)";
+
+    // Toast
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2800);
+
+    // Scroll to results
+    setTimeout(() => {
+      document.getElementById("results-section").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 600);
+
+  } catch (err) {
+    console.error(err);
+    alert("Submission failed. Check your Firebase URL or internet connection.");
+    btn.disabled = false;
+    btn.textContent = "Submit my answers →";
+  }
+});
+
+/* ── Init ── */
+if (!isConfigured()) {
+  showBanner();
+} else {
+  initCharts();
+  startListening();
+}
+</script>
+</body>
+</html>  text-transform: uppercase; color: var(--accent);
   margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;
 }
 .eyebrow::after { content:''; flex:1; height:1px; background:var(--accent2); opacity:0.4; }
