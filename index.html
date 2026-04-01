@@ -31,546 +31,9 @@ body {
   min-height: 100vh;
 }
 .page { max-width: 480px; margin: 0 auto; padding: 0 1.25rem 5rem; }
-
-/* ── Header ── */
-.header { padding: 2.5rem 0 2rem; }
 .eyebrow {
   font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--accent2); margin-bottom: 0.5rem;
-}
-.header h1 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 2rem; line-height: 1.2; font-weight: 400;
-}
-.header h1 em { font-style: italic; color: var(--accent); }
-.header p { color: var(--ink2); margin-top: 0.6rem; font-size: 14px; }
-
-/* ── Divider ── */
-hr { border: none; border-top: 1px solid var(--line); margin: 1.5rem 0; }
-
-/* ── Question card ── */
-.q-card {
-  background: var(--paper2);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 1.25rem 1.25rem 1rem;
-  margin-bottom: 1rem;
-}
-.q-label {
-  font-size: 13px; font-weight: 500; color: var(--ink3);
-  text-transform: uppercase; letter-spacing: 0.09em;
-  margin-bottom: 0.35rem;
-}
-.q-text { font-size: 15px; font-weight: 500; margin-bottom: 0.9rem; color: var(--ink); }
-
-/* ── Options ── */
-.options { display: flex; flex-direction: column; gap: 0.45rem; }
-.opt {
-  display: flex; align-items: center; gap: 0.6rem;
-  background: var(--paper3); border: 1.5px solid transparent;
-  border-radius: 9px; padding: 0.6rem 0.85rem;
-  cursor: pointer; transition: border-color .15s, background .15s;
-  font-size: 14px; user-select: none;
-}
-.opt input { accent-color: var(--accent); width: 15px; height: 15px; flex-shrink: 0; }
-.opt:has(input:checked) {
-  border-color: var(--accent2);
-  background: rgba(82,183,136,0.12);
-}
-.opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
-
-/* ── Submit ── */
-.submit-wrap { margin-top: 1.5rem; }
-.btn-submit {
-  width: 100%; padding: 0.9rem; border: none; border-radius: 11px;
-  background: var(--accent); color: #fff; font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 500; cursor: pointer;
-  transition: background .15s, transform .1s;
-}
-.btn-submit:hover { background: #245a42; }
-.btn-submit:active { transform: scale(0.98); }
-.btn-submit:disabled { background: var(--ink3); cursor: not-allowed; }
-
-/* ── Toast ── */
-.toast {
-  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: var(--accent); color: #fff; border-radius: 30px;
-  padding: 0.65rem 1.4rem; font-size: 14px; font-weight: 500;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
-  z-index: 999; white-space: nowrap;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-/* ── Results section ── */
-#results-section { margin-top: 2.5rem; }
-.results-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.2rem;
-}
-.results-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 1.4rem; font-weight: 400;
-}
-.live-badge {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 11px; font-weight: 500; color: var(--accent2);
-  text-transform: uppercase; letter-spacing: 0.1em;
-}
-.live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--accent2); animation: pulse 1.4s infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50% { opacity: .5; transform: scale(1.4); }
-}
-
-/* ── Stat cards ── */
-.stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
-.stat-card {
-  background: var(--paper2); border: 1px solid var(--line);
-  border-radius: 13px; padding: 1rem 1rem 0.85rem; text-align: center;
-}
-.stat-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 2rem; line-height: 1; color: var(--accent);
-}
-.stat-sub { font-size: 12px; color: var(--ink3); margin-top: 0.25rem; }
-
-/* ── Carbon highlight ── */
-.carbon-card {
-  background: linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 100%);
-  border-radius: 14px; padding: 1.1rem 1.25rem;
-  color: #fff; margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 1rem;
-}
-.carbon-icon { font-size: 2rem; flex-shrink: 0; }
-.carbon-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 1.9rem; font-weight: 400; line-height: 1;
-}
-.carbon-label { font-size: 12px; opacity: 0.75; margin-top: 2px; }
-.carbon-eq { font-size: 12px; opacity: 0.6; font-style: italic; margin-top: 4px; }
-
-/* ── Chart cards ── */
-.chart-card {
-  background: var(--paper2); border: 1px solid var(--line);
-  border-radius: 14px; padding: 1.1rem 1.25rem 1.25rem;
-  margin-bottom: 1rem;
-}
-.chart-title { font-size: 13px; font-weight: 500; color: var(--ink3);
-  text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.75rem; }
-.chart-wrap { position: relative; height: 200px; }
-.chart-wrap-sm { position: relative; height: 160px; }
-
-/* ── Awareness bar ── */
-.awareness-wrap { margin-top: 0.5rem; }
-.aw-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
-.aw-label { font-size: 13px; color: var(--ink2); min-width: 130px; }
-.aw-bar-bg {
-  flex: 1; height: 10px; background: var(--paper3);
-  border-radius: 99px; overflow: hidden;
-}
-.aw-bar-fill {
-  height: 100%; border-radius: 99px;
-  transition: width 0.6s cubic-bezier(.4,0,.2,1);
-}
-.aw-pct { font-size: 13px; font-weight: 500; color: var(--ink2); min-width: 32px; text-align: right; }
-
-/* ── Empty state ── */
-.empty-state {
-  text-align: center; padding: 2.5rem 1rem;
-  color: var(--ink3); font-size: 14px;
-}
-.empty-state .icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
-
-/* ── Config banner ── */
-.config-banner {
-  background: #fff3cd; border: 1px solid #ffc107;
-  border-radius: 10px; padding: 0.85rem 1rem;
-  font-size: 13px; color: #7a4f00; margin-bottom: 1.5rem;
-  display: none;
-}
-.config-banner.show { display: block; }
-.config-banner strong { display: block; margin-bottom: 0.25rem; }
-</style>
-</head>
-<body>
-<div class="page">
-
-  <!-- ══ CONFIG BANNER (shown if Firebase not set up) ══ -->
-  <div class="config-banner" id="configBanner">
-    <strong>⚠️ Firebase not configured</strong>
-    Open this file, find <code>FIREBASE_URL</code> near the top of the &lt;script&gt;, and paste your Firebase Realtime Database URL. See the comment block for step-by-step instructions.
-  </div>
-
-  <!-- ══ HEADER ══ -->
-  <div class="header">
-    <div class="eyebrow">Activity 1 · ISP</div>
-    <h1>Your <em>AI Footprint</em></h1>
-    <p>Answer honestly — results update live for the whole class to see.</p>
-  </div>
-
-  <hr>
-
-  <!-- ══ FORM ══ -->
-  <form id="surveyForm" novalidate>
-
-    <!-- Q1 -->
-    <div class="q-card">
-      <div class="q-label">Question 1</div>
-      <div class="q-text">How many times have you used AI in the last 24 hours?</div>
-      <div class="options" id="q1-opts">
-        <label class="opt"><input type="radio" name="q1" value="0" required> 0 times — I haven't used it</label>
-        <label class="opt"><input type="radio" name="q1" value="1-5"> 1–5 times</label>
-        <label class="opt"><input type="radio" name="q1" value="6-10"> 6–10 times</label>
-        <label class="opt"><input type="radio" name="q1" value="10+"> More than 10 times</label>
-      </div>
-    </div>
-
-    <!-- Q2 -->
-    <div class="q-card">
-      <div class="q-label">Question 2</div>
-      <div class="q-text">What do you use AI for? <span style="font-weight:300;font-size:13px">(select all that apply)</span></div>
-      <div class="options opt-grid" id="q2-opts">
-        <label class="opt"><input type="checkbox" name="q2" value="Homework / studying"> 📚 Homework</label>
-        <label class="opt"><input type="checkbox" name="q2" value="Writing / editing"> ✍️ Writing</label>
-        <label class="opt"><input type="checkbox" name="q2" value="Coding"> 💻 Coding</label>
-        <label class="opt"><input type="checkbox" name="q2" value="Research"> 🔍 Research</label>
-        <label class="opt"><input type="checkbox" name="q2" value="Creative work"> 🎨 Creative</label>
-        <label class="opt"><input type="checkbox" name="q2" value="Other"> 🔀 Other</label>
-      </div>
-    </div>
-
-    <!-- Q3 -->
-    <div class="q-card">
-      <div class="q-label">Question 3</div>
-      <div class="q-text">Have you considered the environmental or ethical implications of your AI use?</div>
-      <div class="options">
-        <label class="opt"><input type="radio" name="q3" value="yes" required> Yes, I think about it regularly</label>
-        <label class="opt"><input type="radio" name="q3" value="sometimes"> Sometimes, but not often</label>
-        <label class="opt"><input type="radio" name="q3" value="no"> No, not really</label>
-        <label class="opt"><input type="radio" name="q3" value="never-thought"> I've never thought about it until now</label>
-      </div>
-    </div>
-
-    <div class="submit-wrap">
-      <button type="submit" class="btn-submit" id="submitBtn">Submit my answers →</button>
-    </div>
-  </form>
-
-  <!-- ══ RESULTS SECTION ══ -->
-  <div id="results-section">
-    <hr style="margin: 2rem 0 1.5rem">
-    <div class="results-header">
-      <div class="results-title">Class Results</div>
-      <div class="live-badge"><div class="live-dot"></div>Live</div>
-    </div>
-
-    <!-- Top stats row -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-num" id="stat-total">—</div>
-        <div class="stat-sub">responses so far</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="stat-daily-avg">—</div>
-        <div class="stat-sub">avg queries / day</div>
-      </div>
-    </div>
-
-    <!-- Carbon card -->
-    <div class="carbon-card">
-      <div class="carbon-icon">🌿</div>
-      <div>
-        <div class="carbon-num" id="stat-co2">— g</div>
-        <div class="carbon-label">estimated CO₂ emitted today (class total)</div>
-        <div class="carbon-eq" id="stat-co2-eq"></div>
-      </div>
-    </div>
-
-    <!-- Usage frequency chart -->
-    <div class="chart-card">
-      <div class="chart-title">AI Usage Frequency (last 24 h)</div>
-      <div class="chart-wrap">
-        <canvas id="chartFreq"></canvas>
-      </div>
-    </div>
-
-    <!-- Use cases chart -->
-    <div class="chart-card">
-      <div class="chart-title">What is AI used for?</div>
-      <div class="chart-wrap">
-        <canvas id="chartUses"></canvas>
-      </div>
-    </div>
-
-    <!-- Environmental awareness -->
-    <div class="chart-card">
-      <div class="chart-title">Environmental Awareness</div>
-      <div class="awareness-wrap" id="awarenessWrap">
-        <div class="empty-state"><div class="icon">⏳</div>Waiting for responses…</div>
-      </div>
-    </div>
-
-  </div><!-- /results-section -->
-</div><!-- /page -->
-
-<!-- Toast -->
-<div class="toast" id="toast">✓ Response recorded!</div>
-
-<script>
-/* ═══════════════════════════════════════════════════
-   SETUP: Replace the placeholder below with your
-   Firebase Realtime Database URL.
-
-   Steps (takes ~3 minutes):
-   1. Go to https://console.firebase.google.com
-   2. Click "Add project" → give it any name → Continue
-   3. Disable Google Analytics (optional) → Create project
-   4. In the left sidebar: Build → Realtime Database
-   5. Click "Create Database" → choose any location → Start in TEST MODE
-   6. Copy the URL (looks like https://YOUR-NAME-default-rtdb.firebaseio.com)
-   7. Paste it below replacing the placeholder string.
-═══════════════════════════════════════════════════ */
-const FIREBASE_URL = "https://isp-activity-default-rtdb.firebaseio.com";
-// ↑ REPLACE THIS ↑
-
-const DB_PATH = "/isp-activity1";
-
-/* ── Helpers ── */
-const isConfigured = () => !FIREBASE_URL.includes("YOUR-PROJECT");
-
-function showBanner() {
-  document.getElementById("configBanner").classList.add("show");
-}
-
-/* ── Carbon math ──
-   ~0.002 kWh per ChatGPT query (Lancet / IEA estimate)
-   US grid avg: 0.386 kg CO₂ / kWh
-   → ~0.77 g CO₂ per query                              */
-const CO2_PER_QUERY_G = 0.77;
-const QUERY_MIDPOINTS = { "0": 0, "1-5": 3, "6-10": 8, "10+": 15 };
-
-/* ── Chart instances ── */
-let chartFreq = null, chartUses = null;
-
-function initCharts() {
-  const defaults = {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    animation: { duration: 500 }
-  };
-  const gridColor = "rgba(26,31,28,0.07)";
-
-  chartFreq = new Chart(document.getElementById("chartFreq"), {
-    type: "bar",
-    data: {
-      labels: ["0 times", "1–5 times", "6–10 times", "10+ times"],
-      datasets: [{
-        data: [0,0,0,0],
-        backgroundColor: ["#b7e4c7","#74c69d","#52b788","#2d6a4f"],
-        borderRadius: 7, borderSkipped: false
-      }]
-    },
-    options: {
-      ...defaults,
-      scales: {
-        y: {
-          beginAtZero: true, ticks: { stepSize: 1, color: "#8a9490", font: { size: 12 } },
-          grid: { color: gridColor }, border: { display: false }
-        },
-        x: { ticks: { color: "#8a9490", font: { size: 12 } }, grid: { display: false }, border: { display: false } }
-      }
-    }
-  });
-
-  chartUses = new Chart(document.getElementById("chartUses"), {
-    type: "bar",
-    data: {
-      labels: ["Homework", "Writing", "Coding", "Research", "Creative", "Other"],
-      datasets: [{
-        data: [0,0,0,0,0,0],
-        backgroundColor: "#52b788",
-        borderRadius: 7, borderSkipped: false
-      }]
-    },
-    options: {
-      ...defaults,
-      indexAxis: "y",
-      scales: {
-        x: {
-          beginAtZero: true, ticks: { stepSize: 1, color: "#8a9490", font: { size: 12 } },
-          grid: { color: gridColor }, border: { display: false }
-        },
-        y: { ticks: { color: "#4a5450", font: { size: 12 } }, grid: { display: false }, border: { display: false } }
-      }
-    }
-  });
-}
-
-/* ── Aggregate results from Firebase snapshot ── */
-function aggregate(data) {
-  const freq   = { "0": 0, "1-5": 0, "6-10": 0, "10+": 0 };
-  const uses   = { "Homework / studying":0, "Writing / editing":0, "Coding":0, "Research":0, "Creative work":0, "Other":0 };
-  const aware  = { yes:0, sometimes:0, no:0, "never-thought":0 };
-  let total = 0;
-
-  Object.values(data || {}).forEach(r => {
-    total++;
-    if (r.q1 && freq[r.q1] !== undefined) freq[r.q1]++;
-    if (Array.isArray(r.q2)) r.q2.forEach(u => { if (uses[u] !== undefined) uses[u]++; });
-    if (r.q3 && aware[r.q3] !== undefined) aware[r.q3]++;
-  });
-
-  // Avg daily queries
-  let totalQueries = 0;
-  Object.entries(freq).forEach(([k,v]) => { totalQueries += v * QUERY_MIDPOINTS[k]; });
-  const avgQueries = total > 0 ? (totalQueries / total).toFixed(1) : "—";
-  const co2Total   = (totalQueries * CO2_PER_QUERY_G).toFixed(1);
-  const co2Eq      = totalQueries > 0
-    ? `≈ charging ${Math.round(totalQueries * 0.002 * 1000 / 3.7)}% of a phone battery`
-    : "";
-
-  return { freq, uses, aware, total, avgQueries, co2Total, co2Eq };
-}
-
-/* ── Render results ── */
-function renderResults(agg) {
-  document.getElementById("stat-total").textContent   = agg.total || "—";
-  document.getElementById("stat-daily-avg").textContent = agg.avgQueries;
-  document.getElementById("stat-co2").textContent     = agg.total ? `${agg.co2Total} g` : "— g";
-  document.getElementById("stat-co2-eq").textContent  = agg.co2Eq;
-
-  if (!chartFreq) initCharts();
-
-  // Frequency chart
-  chartFreq.data.datasets[0].data = [
-    agg.freq["0"], agg.freq["1-5"], agg.freq["6-10"], agg.freq["10+"]
-  ];
-  chartFreq.update();
-
-  // Use-case chart
-  const useKeys = ["Homework / studying","Writing / editing","Coding","Research","Creative work","Other"];
-  chartUses.data.datasets[0].data = useKeys.map(k => agg.uses[k]);
-  chartUses.update();
-
-  // Awareness bars
-  const awarenessWrap = document.getElementById("awarenessWrap");
-  if (agg.total === 0) {
-    awarenessWrap.innerHTML = `<div class="empty-state"><div class="icon">⏳</div>Waiting for responses…</div>`;
-    return;
-  }
-  const awareItems = [
-    { label: "Yes, regularly",       key: "yes",           color: "#2d6a4f" },
-    { label: "Sometimes",             key: "sometimes",     color: "#52b788" },
-    { label: "Not really",            key: "no",            color: "#e07c24" },
-    { label: "Never thought about it",key: "never-thought", color: "#c1441a" },
-  ];
-  awarenessWrap.innerHTML = awareItems.map(item => {
-    const pct = agg.total ? Math.round((agg.aware[item.key] / agg.total) * 100) : 0;
-    return `
-      <div class="aw-row">
-        <div class="aw-label">${item.label}</div>
-        <div class="aw-bar-bg">
-          <div class="aw-bar-fill" style="width:${pct}%;background:${item.color}"></div>
-        </div>
-        <div class="aw-pct">${pct}%</div>
-      </div>`;
-  }).join("");
-}
-
-/* ── Firebase: listen for realtime updates ── */
-function startListening() {
-  if (!isConfigured()) return;
-
-  const url = `${FIREBASE_URL}${DB_PATH}.json`;
-
-  // Polling every 4 seconds (simple, no SSE required for GitHub Pages)
-  const poll = () => {
-    fetch(url)
-      .then(r => r.json())
-      .then(data => {
-        const agg = aggregate(data);
-        renderResults(agg);
-      })
-      .catch(err => console.warn("Poll error:", err));
-  };
-
-  poll();
-  setInterval(poll, 4000);
-}
-
-/* ── Submit form ── */
-document.getElementById("surveyForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  if (!isConfigured()) {
-    showBanner();
-    return;
-  }
-
-  const form = e.target;
-  const btn  = document.getElementById("submitBtn");
-
-  // Validate Q1
-  const q1 = form.q1.value;
-  if (!q1) { alert("Please answer Question 1."); return; }
-
-  // Q2 checkboxes
-  const q2 = Array.from(form.querySelectorAll("input[name='q2']:checked")).map(i => i.value);
-
-  // Validate Q3
-  const q3El = form.querySelector("input[name='q3']:checked");
-  if (!q3El) { alert("Please answer Question 3."); return; }
-  const q3 = q3El.value;
-
-  btn.disabled = true;
-  btn.textContent = "Submitting…";
-
-  const payload = { q1, q2, q3, ts: Date.now() };
-
-  try {
-    await fetch(`${FIREBASE_URL}${DB_PATH}.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    // Disable form after submit
-    form.querySelectorAll("input, button").forEach(el => el.disabled = true);
-    btn.textContent = "✓ Submitted";
-    btn.style.background = "var(--accent2)";
-
-    // Toast
-    const toast = document.getElementById("toast");
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2800);
-
-    // Scroll to results
-    setTimeout(() => {
-      document.getElementById("results-section").scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 600);
-
-  } catch (err) {
-    console.error(err);
-    alert("Submission failed. Check your Firebase URL or internet connection.");
-    btn.disabled = false;
-    btn.textContent = "Submit my answers →";
-  }
-});
-
-/* ── Init ── */
-if (!isConfigured()) {
-  showBanner();
-} else {
-  initCharts();
-  startListening();
-}
-</script>
-</body>
-</html>  text-transform: uppercase; color: var(--accent);
+  text-transform: uppercase; color: var(--accent);
   margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;
 }
 .eyebrow::after { content:''; flex:1; height:1px; background:var(--accent2); opacity:0.4; }
@@ -685,13 +148,10 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
   font-size:12px; color:var(--accent); font-weight:500;
 }
 .resp-badge strong { font-family:'Instrument Serif',serif; font-size:18px; line-height:1; }
-.refresh-btn {
-  display:flex; align-items:center; gap:5px;
-  padding:0.6rem 1rem; background:transparent;
-  border:1px solid var(--line); border-radius:10px;
-  font-family:'DM Sans',sans-serif; font-size:12.5px;
-  color:var(--ink3); cursor:pointer; transition:all 0.15s;
-}
+.live-dot-wrap { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--accent2); font-weight:500; letter-spacing:0.08em; text-transform:uppercase; }
+.live-dot { width:7px; height:7px; border-radius:50%; background:var(--accent2); animation:pulse 1.4s infinite; flex-shrink:0; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+.refresh-btn { display:flex; align-items:center; gap:5px; padding:0.6rem 1rem; background:transparent; border:1px solid var(--line); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:12.5px; color:var(--ink3); cursor:pointer; transition:all 0.15s; }
 .refresh-btn:hover { border-color:var(--accent); color:var(--accent); }
 .r-stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
 .r-stat { background:#fff; border:1px solid var(--line); border-radius:13px; padding:0.9rem 0.8rem; text-align:center; }
@@ -699,8 +159,6 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
 .r-stat-lbl { font-size:10px; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink3); margin-top:4px; }
 .chart-card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:1.25rem 1.25rem 1.1rem; margin-bottom:12px; }
 .chart-eyebrow { font-size:10.5px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.85rem; }
-
-/* awareness bars */
 .aw-bars { display:flex; flex-direction:column; gap:7px; }
 .aw-row2 { display:flex; align-items:center; gap:8px; }
 .aw-num { font-size:11px; color:var(--ink3); width:14px; flex-shrink:0; text-align:right; }
@@ -708,31 +166,27 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
 .aw-fill { height:100%; border-radius:6px; transition:width 0.9s cubic-bezier(.25,.8,.25,1); display:flex; align-items:center; padding:0 8px; min-width:0; }
 .aw-fill span { font-size:11px; font-weight:500; color:#fff; white-space:nowrap; }
 .aw-pct { font-size:11px; color:var(--ink3); width:32px; text-align:right; }
-
-/* consent legend */
 .donut-wrap { display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; }
 .donut-legend { display:flex; flex-direction:column; gap:6px; flex:1; min-width:160px; }
 .dl-row { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink2); }
 .dl-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
 .dl-cnt { margin-left:auto; font-weight:500; color:var(--ink); font-size:12px; }
-
-/* word cloud */
 .word-cloud { display:flex; flex-wrap:wrap; gap:8px; padding:0.25rem 0; align-items:baseline; }
-.wc-word {
-  font-family:'Instrument Serif',serif; color:var(--accent);
-  line-height:1.1; opacity:0;
-  animation:fadeWord 0.5s ease forwards;
-}
+.wc-word { font-family:'Instrument Serif',serif; color:var(--accent); line-height:1.1; opacity:0; animation:fadeWord 0.5s ease forwards; }
 @keyframes fadeWord { to { opacity:1; } }
-
 .r-empty { font-size:13px; color:var(--ink3); font-style:italic; text-align:center; padding:1.5rem 0; }
-.r-error-box { background:#fad9d0; border:1px solid #f5b8a0; border-radius:12px; padding:0.9rem 1.1rem; font-size:13px; color:#7a1f0a; margin-bottom:12px; line-height:1.5; }
+.r-error-box { background:#fad9d0; border:1px solid #f5b8a0; border-radius:12px; padding:0.9rem 1.1rem; font-size:13px; color:#7a1f0a; margin-bottom:12px; line-height:1.5; display:none; }
+.carbon-banner { background:linear-gradient(135deg,#1a3a2a 0%,#2d6a4f 100%); border-radius:14px; padding:1.1rem 1.25rem; color:#fff; margin-bottom:12px; display:flex; align-items:center; gap:1rem; }
+.cb-icon { font-size:2rem; flex-shrink:0; }
+.cb-num  { font-family:'Instrument Serif',serif; font-size:1.9rem; font-weight:400; line-height:1; }
+.cb-lbl  { font-size:12px; opacity:0.75; margin-top:2px; }
+.cb-eq   { font-size:12px; opacity:0.6; font-style:italic; margin-top:4px; }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="header">
+  <div style="padding:2.5rem 0 1.5rem;">
     <div class="eyebrow">Activity 1 &nbsp;·&nbsp; ISP Public Health</div>
     <h1>Your AI <em>carbon</em><br>footprint</h1>
     <p class="header-sub">Every prompt you send travels to a data center burning electricity and water. Let's see what that costs — and who lives next door.</p>
@@ -746,7 +200,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     <div class="prog-seg"        id="p4"></div>
   </div>
 
-  <!-- S0 -->
+  <!-- ══ S0: Daily uses ══ -->
   <div class="screen active" id="s0">
     <div class="card">
       <div class="card-eyebrow">Question 1 of 4</div>
@@ -779,7 +233,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     <div class="nav"><button class="btn-next" onclick="go(1)">Next →</button></div>
   </div>
 
-  <!-- S1 -->
+  <!-- ══ S1: Weekly + use cases ══ -->
   <div class="screen" id="s1">
     <div class="card">
       <div class="card-eyebrow">Question 2 of 4</div>
@@ -811,7 +265,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     </div>
   </div>
 
-  <!-- S2 -->
+  <!-- ══ S2: Awareness + consent ══ -->
   <div class="screen" id="s2">
     <div class="card">
       <div class="card-eyebrow">Question 3 of 4 · Environmental awareness</div>
@@ -842,7 +296,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     </div>
   </div>
 
-  <!-- S3 -->
+  <!-- ══ S3: One word + submit ══ -->
   <div class="screen" id="s3">
     <div class="card">
       <div class="card-eyebrow">Question 4 of 4</div>
@@ -861,7 +315,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     <div class="submit-status" id="submitStatus"></div>
   </div>
 
-  <!-- S4: Personal Results -->
+  <!-- ══ S4: Personal Results ══ -->
   <div class="screen" id="s4">
     <div class="result-hero">
       <div class="hero-num" id="rnum">2.5</div>
@@ -903,47 +357,51 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     </div>
   </div>
 
-  <!-- S5: CLASS RESULTS ──────────────────────────── -->
+  <!-- ══ S5: Class Results ══ -->
   <div class="screen" id="s5">
-
     <div style="padding:2.5rem 0 1.5rem;">
-      <div class="results-eyebrow">Class Dashboard &nbsp;·&nbsp; Live</div>
+      <div class="results-eyebrow">Class Dashboard</div>
       <div class="results-title">How the <em>class</em><br>responded</div>
     </div>
 
-    <div id="r-err" class="r-error-box" style="display:none;"></div>
+    <div id="r-err" class="r-error-box"></div>
 
     <div class="resp-row">
       <span class="resp-badge"><strong id="rc-n">—</strong>&nbsp;responses</span>
+      <div class="live-dot-wrap"><div class="live-dot"></div>Live</div>
       <button class="refresh-btn" onclick="loadResults()">↻ Refresh</button>
     </div>
 
-    <!-- 3 top-line stats -->
     <div class="r-stat-row">
       <div class="r-stat"><div class="r-stat-val" id="rc-daily">—</div><div class="r-stat-lbl">avg uses/day</div></div>
       <div class="r-stat"><div class="r-stat-val" id="rc-co2">—</div><div class="r-stat-lbl">avg CO₂ g</div></div>
       <div class="r-stat"><div class="r-stat-val" id="rc-water">—</div><div class="r-stat-lbl">avg water L</div></div>
     </div>
 
-    <!-- Chart 1: daily uses bins -->
+    <div class="carbon-banner">
+      <div class="cb-icon">🌿</div>
+      <div>
+        <div class="cb-num" id="rc-co2-total">— g</div>
+        <div class="cb-lbl">estimated total CO₂ emitted today (class)</div>
+        <div class="cb-eq" id="rc-co2-eq"></div>
+      </div>
+    </div>
+
     <div class="chart-card">
       <div class="chart-eyebrow">Daily AI uses — class distribution</div>
       <div style="position:relative;height:170px;"><canvas id="ch-daily"></canvas></div>
     </div>
 
-    <!-- Chart 2: use cases -->
     <div class="chart-card">
       <div class="chart-eyebrow">What does the class use AI for?</div>
       <div style="position:relative;height:210px;"><canvas id="ch-uses"></canvas></div>
     </div>
 
-    <!-- Awareness bars -->
     <div class="chart-card">
       <div class="chart-eyebrow">Environmental awareness (1 = never → 5 = often)</div>
       <div class="aw-bars" id="aw-bars" style="margin-top:4px;"></div>
     </div>
 
-    <!-- Consent donut -->
     <div class="chart-card">
       <div class="chart-eyebrow">Should communities have formal say?</div>
       <div class="donut-wrap">
@@ -952,7 +410,6 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
       </div>
     </div>
 
-    <!-- Word cloud -->
     <div class="chart-card">
       <div class="chart-eyebrow">One-word reactions — class word cloud</div>
       <div class="word-cloud" id="wordcloud"></div>
@@ -967,8 +424,13 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
 </div><!-- /page -->
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/library/d/17AwFEust8lx9Y3tzt9RdqdW-y5Qfawsm1IPtZbxeThhlKTUOrY5z5V5x/2';
+/* ════════════════════════════════════════
+   Firebase Realtime Database
+════════════════════════════════════════ */
+const FIREBASE_URL = "https://isp-activity-default-rtdb.firebaseio.com";
+const DB_PATH      = "/isp-responses";
 
+/* ── Equivalence table ── */
 const equivTable = [
   { max:2,        icon:'🔋', txt:'<strong>Charging your phone</strong> for ~10 minutes' },
   { max:5,        icon:'🫖', txt:'<strong>Boiling a kettle</strong> for one cup of tea' },
@@ -978,258 +440,319 @@ const equivTable = [
   { max:120,      icon:'🚗', txt:'<strong>Driving a car</strong> about 0.5 km' },
   { max:Infinity, icon:'✈️', txt:'<strong>A short flight</strong> segment equivalent' }
 ];
-function co2(q){ return Math.round(q*0.5*10)/10; }
-function level(g){
-  if(g<8)  return{label:'low',     cls:'pill-low', color:'var(--accent)', strip:'var(--accent2)'};
-  if(g<25) return{label:'moderate',cls:'pill-med', color:'var(--warn)',   strip:'var(--warn)'};
-  return        {label:'high',     cls:'pill-high',color:'var(--danger)', strip:'var(--danger)'};
-}
-function equiv(g){ return equivTable.find(e=>g<=e.max); }
 
-function updateS0(){
-  const v=+document.getElementById('sl0').value;
-  const g=co2(v); const lv=level(g); const eq=equiv(g);
-  document.getElementById('v0').textContent=v;
-  document.getElementById('v0').style.color=lv.color;
-  document.getElementById('kwh0').textContent=(v*0.001).toFixed(3)+' kWh';
-  document.getElementById('co2val').textContent=g+' g';
-  document.getElementById('co2val').style.color=lv.color;
-  const pill=document.getElementById('pill0');
-  pill.className='pill '+lv.cls; pill.textContent=lv.label;
-  document.getElementById('equiv0').style.borderLeftColor=lv.strip;
-  document.getElementById('eqtext0').innerHTML=eq.icon+'&nbsp;'+eq.txt.replace(/<[^>]+>/g,'');
+function co2(q)   { return Math.round(q * 0.5 * 10) / 10; }
+function level(g) {
+  if (g < 8)  return { label:'low',      cls:'pill-low',  color:'var(--accent)',  strip:'var(--accent2)' };
+  if (g < 25) return { label:'moderate', cls:'pill-med',  color:'var(--warn)',    strip:'var(--warn)' };
+  return             { label:'high',     cls:'pill-high', color:'var(--danger)',  strip:'var(--danger)' };
 }
-function pickChoice(id,btn){
-  document.querySelectorAll('#'+id+' .choice').forEach(b=>b.classList.remove('sel'));
+function equiv(g) { return equivTable.find(e => g <= e.max); }
+
+/* ── S0 live ── */
+function updateS0() {
+  const v = +document.getElementById('sl0').value;
+  const g = co2(v); const lv = level(g); const eq = equiv(g);
+  document.getElementById('v0').textContent       = v;
+  document.getElementById('v0').style.color       = lv.color;
+  document.getElementById('kwh0').textContent     = (v * 0.001).toFixed(3) + ' kWh';
+  document.getElementById('co2val').textContent   = g + ' g';
+  document.getElementById('co2val').style.color   = lv.color;
+  const pill = document.getElementById('pill0');
+  pill.className = 'pill ' + lv.cls; pill.textContent = lv.label;
+  document.getElementById('equiv0').style.borderLeftColor = lv.strip;
+  document.getElementById('eqtext0').innerHTML = eq.icon + '&nbsp;' + eq.txt.replace(/<[^>]+>/g, '');
+}
+
+function pickChoice(id, btn) {
+  document.querySelectorAll('#' + id + ' .choice').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
 }
-function toggleCb(btn){ btn.classList.toggle('sel'); }
-function pickScale(id,btn){
-  document.querySelectorAll('#'+id+' .scale-btn').forEach(b=>b.classList.remove('sel'));
+function toggleCb(btn) { btn.classList.toggle('sel'); }
+function pickScale(id, btn) {
+  document.querySelectorAll('#' + id + ' .scale-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
 }
-function collectData(){
-  const daily=+document.getElementById('sl0').value;
-  const weekly=+document.getElementById('sl1').value;
-  const gDay=co2(daily);
-  const useCases=[...document.querySelectorAll('#usegrid .cb-btn.sel')].map(b=>b.textContent.trim());
-  const envBtn=document.querySelector('#envscale .scale-btn.sel');
-  const consentBtn=document.querySelector('#consent .choice.sel');
-  return{
-    dailyUses:daily, dailyCO2:gDay, weeklyUses:weekly, weeklyCO2:co2(weekly),
+
+/* ── Collect data ── */
+function collectData() {
+  const daily  = +document.getElementById('sl0').value;
+  const weekly = +document.getElementById('sl1').value;
+  const gDay   = co2(daily);
+  const useCases   = [...document.querySelectorAll('#usegrid .cb-btn.sel')].map(b => b.textContent.trim());
+  const envBtn     = document.querySelector('#envscale .scale-btn.sel');
+  const consentBtn = document.querySelector('#consent .choice.sel');
+  return {
+    dailyUses:        daily,
+    dailyCO2:         gDay,
+    weeklyUses:       weekly,
+    weeklyCO2:        co2(weekly),
     useCases,
-    envAwareness: envBtn?envBtn.textContent.trim():'',
-    communityConsent: consentBtn?consentBtn.textContent.replace(/^[A-D]\s*/,'').trim():'',
-    oneWord: document.getElementById('wordinput').value.trim(),
-    annualCO2: Math.round(gDay*365/100)/10,
-    waterToday: Math.round(daily*10)/100,
+    envAwareness:     envBtn     ? envBtn.textContent.trim() : '',
+    communityConsent: consentBtn ? consentBtn.textContent.replace(/^[A-D]\s*/, '').trim() : '',
+    oneWord:          document.getElementById('wordinput').value.trim(),
+    annualCO2:        Math.round(gDay * 365 / 100) / 10,
+    waterToday:       Math.round(daily * 10) / 100,
+    ts: Date.now()
   };
 }
-function submitAndContinue(){
-  const btn=document.getElementById('submitBtn');
-  const status=document.getElementById('submitStatus');
-  btn.disabled=true;
-  status.className='submit-status sending';
-  status.textContent='Saving your response…';
-  const d=collectData();
-  const params=new URLSearchParams({
-    dailyUses:d.dailyUses, dailyCO2:d.dailyCO2,
-    weeklyUses:d.weeklyUses, weeklyCO2:d.weeklyCO2,
-    useCases:(d.useCases||[]).join(', '),
-    envAwareness:d.envAwareness,
-    communityConsent:d.communityConsent,
-    oneWord:d.oneWord,
-    annualCO2:d.annualCO2,
-    waterToday:d.waterToday,
+
+/* ── Submit to Firebase ── */
+async function submitAndContinue() {
+  const btn    = document.getElementById('submitBtn');
+  const status = document.getElementById('submitStatus');
+  btn.disabled = true;
+  status.className   = 'submit-status sending';
+  status.textContent = 'Saving your response…';
+
+  try {
+    const res = await fetch(FIREBASE_URL + DB_PATH + '.json', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(collectData())
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    status.className   = 'submit-status success';
+    status.textContent = '✓ Response saved — loading your footprint…';
+    setTimeout(() => go(4), 900);
+  } catch (err) {
+    console.error(err);
+    status.className   = 'submit-status error';
+    status.textContent = '⚠ Could not save — continuing anyway…';
+    setTimeout(() => go(4), 1500);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ── Personal results (S4) ── */
+function buildResults() {
+  const daily  = +document.getElementById('sl0').value;
+  const weekly = +document.getElementById('sl1').value;
+  const gDay   = co2(daily); const gWeek = co2(weekly); const lv = level(gDay);
+  const annual = Math.round(gDay * 365 / 100) / 10;
+  const water  = Math.round(daily * 10) / 100;
+
+  document.getElementById('rnum').textContent   = gDay;
+  document.getElementById('rnum').style.color   = lv.color;
+  const rp = document.getElementById('rpill');
+  rp.className = 'pill ' + lv.cls; rp.textContent = lv.label;
+  document.getElementById('rannual').textContent = annual + ' kg';
+  document.getElementById('rweekly').textContent = gWeek + ' g';
+  document.getElementById('rwater').textContent  = water + ' L';
+  document.getElementById('rclass').textContent  = Math.round(gDay * 20 * 10) / 10 + ' g';
+
+  const eq   = equiv(gDay);
+  const list = document.getElementById('equivlist');
+  list.innerHTML = '';
+  [
+    { icon: eq.icon, body: eq.txt + " — that's your <strong>daily</strong> AI use." },
+    { icon: '💧', body: 'Your queries used <strong>' + water + ' L water</strong> for data center cooling.' },
+    { icon: '🏙️', body: 'If 20 classmates used AI at your rate: <strong>' + Math.round(gDay * 20 * 10) / 10 + ' g CO₂</strong> today combined.' }
+  ].forEach(item => {
+    list.innerHTML += `<div class="eq-row"><div class="eq-icon">${item.icon}</div><div class="eq-body">${item.body}</div></div>`;
   });
-  const img=new Image();
-  img.onload=img.onerror=function(){
-    status.className='submit-status success';
-    status.textContent='✓ Response saved — loading your footprint…';
-    setTimeout(()=>go(4),900);
-    btn.disabled=false;
+}
+
+/* ── Screen navigation ── */
+function go(n) {
+  if (n === 4) buildResults();
+  document.querySelectorAll('.screen').forEach((s, i) => s.classList.toggle('active', i === n));
+  document.querySelectorAll('.prog-seg').forEach((d, i) => {
+    d.classList.toggle('done',   i < n && i < 5);
+    d.classList.toggle('active', i === n && i < 5);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function goResults() { go(5); loadResults(); startPolling(); }
+
+/* ── Chart helpers ── */
+const charts = {};
+function killChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+/* ── Aggregate raw Firebase data ── */
+function aggregate(raw) {
+  const rows = Object.values(raw || {});
+  const n    = rows.length;
+  const bins = { '0':0, '1-5':0, '6-10':0, '11-20':0, '21-40':0 };
+  const useCases = {};
+  const envAw    = { '1':0, '2':0, '3':0, '4':0, '5':0 };
+  const conMap   = {};
+  const words    = [];
+  let sumDaily = 0, sumCO2 = 0, sumWater = 0;
+
+  rows.forEach(r => {
+    const d = r.dailyUses || 0;
+    if      (d === 0)  bins['0']++;
+    else if (d <= 5)   bins['1-5']++;
+    else if (d <= 10)  bins['6-10']++;
+    else if (d <= 20)  bins['11-20']++;
+    else               bins['21-40']++;
+
+    if (Array.isArray(r.useCases)) {
+      r.useCases.forEach(u => { useCases[u] = (useCases[u] || 0) + 1; });
+    }
+
+    const aw = String(r.envAwareness || '');
+    if (envAw[aw] !== undefined) envAw[aw]++;
+
+    const con = r.communityConsent || '';
+    if (con) conMap[con] = (conMap[con] || 0) + 1;
+
+    if (r.oneWord) words.push(r.oneWord.trim().toLowerCase());
+
+    sumDaily += r.dailyUses  || 0;
+    sumCO2   += r.dailyCO2   || 0;
+    sumWater += r.waterToday || 0;
+  });
+
+  return {
+    n,
+    avgDaily: n ? sumDaily / n : 0,
+    avgCO2:   n ? sumCO2   / n : 0,
+    avgWater: n ? sumWater / n : 0,
+    totalCO2: sumCO2,
+    bins, useCases, envAw, conMap, words
   };
-  img.src=SHEET_URL+'?'+params.toString();
-  setTimeout(()=>{ if(btn.disabled){ go(4); } },3000);
 }
-function buildResults(){
-  const daily=+document.getElementById('sl0').value;
-  const weekly=+document.getElementById('sl1').value;
-  const gDay=co2(daily); const gWeek=co2(weekly); const lv=level(gDay);
-  const annual=Math.round(gDay*365/100)/10;
-  const water=Math.round(daily*10)/100;
-  document.getElementById('rnum').textContent=gDay;
-  document.getElementById('rnum').style.color=lv.color;
-  const rp=document.getElementById('rpill');
-  rp.className='pill '+lv.cls; rp.textContent=lv.label;
-  document.getElementById('rannual').textContent=annual+' kg';
-  document.getElementById('rweekly').textContent=gWeek+' g';
-  document.getElementById('rwater').textContent=water+' L';
-  document.getElementById('rclass').textContent=Math.round(gDay*20*10)/10+' g';
-  const list=document.getElementById('equivlist'); list.innerHTML='';
-  const eq=equiv(gDay);
-  [{icon:eq.icon,body:eq.txt+' — that\'s your <strong>daily</strong> AI use.'},
-   {icon:'💧',body:'Your queries used <strong>'+water+' L water</strong> for data center cooling.'},
-   {icon:'🏙️',body:'If 20 classmates used AI at your rate: <strong>'+Math.round(gDay*20*10)/10+' g CO₂</strong> today combined.'}
-  ].forEach(item=>{
-    list.innerHTML+=`<div class="eq-row"><div class="eq-icon">${item.icon}</div><div class="eq-body">${item.body}</div></div>`;
-  });
-}
-function go(n){
-  if(n===4) buildResults();
-  document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n));
-  document.querySelectorAll('.prog-seg').forEach((d,i)=>{
-    d.classList.toggle('done',i<n && i<5);
-    d.classList.toggle('active',i===n && i<5);
-  });
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function goResults(){ go(5); loadResults(); }
 
-// ── CLASS RESULTS ──────────────────────────────────────────────────
-const charts={};
-function killChart(id){ if(charts[id]){charts[id].destroy();delete charts[id];} }
+/* ── Render class results ── */
+function renderResults(agg) {
+  document.getElementById('rc-n').textContent     = agg.n;
+  document.getElementById('rc-daily').textContent = agg.avgDaily.toFixed(1);
+  document.getElementById('rc-co2').textContent   = agg.avgCO2.toFixed(1) + 'g';
+  document.getElementById('rc-water').textContent = agg.avgWater.toFixed(2) + 'L';
 
-async function loadResults(){
-  document.getElementById('r-err').style.display='none';
-  return new Promise(function(resolve){
-    var cbName = 'isp_cb_'+Date.now();
-    var script = document.createElement('script');
-    var timer = setTimeout(function(){
-      var errEl=document.getElementById('r-err');
-      errEl.style.display='block';
-      errEl.textContent='⚠ 无法加载结果，请检查 Apps Script 是否已重新部署。';
-      renderResults({});
-      resolve();
-    }, 6000);
-    window[cbName] = function(data){
-      clearTimeout(timer);
-      delete window[cbName];
-      document.body.removeChild(script);
-      renderResults(data);
-      resolve();
-    };
-    script.src = SHEET_URL + '?action=getResults&callback=' + cbName;
-    document.body.appendChild(script);
-  });
-}
-function renderResults(d){
-  const n   = d.count          || 0;
-  const avgD= d.avgDailyUses   || 0;
-  const avgC= d.avgDailyCO2    || 0;
-  const avgW= d.avgWater       || 0;
+  document.getElementById('rc-co2-total').textContent = agg.totalCO2.toFixed(1) + ' g';
+  const totalQ = Math.round(agg.totalCO2 / 0.5);
+  document.getElementById('rc-co2-eq').textContent =
+    totalQ > 0 ? `≈ charging ${Math.round(totalQ * 0.001 * 1000 / 3.7)}% of a phone battery` : '';
 
-  document.getElementById('rc-n').textContent     = n;
-  document.getElementById('rc-daily').textContent = avgD.toFixed(1);
-  document.getElementById('rc-co2').textContent   = avgC.toFixed(1)+'g';
-  document.getElementById('rc-water').textContent = avgW.toFixed(2)+'L';
-
-  // ── Chart 1: Daily uses distribution
+  /* Chart 1: daily bins */
   killChart('d');
-  const bins=d.dailyBins||{};
-  const ctxD=document.getElementById('ch-daily').getContext('2d');
-  charts['d']=new Chart(ctxD,{
-    type:'bar',
-    data:{
-      labels:['0','1–5','6–10','11–20','21–40'],
-      datasets:[{
-        data:[bins['0']||0,bins['1-5']||0,bins['6-10']||0,bins['11-20']||0,bins['21-40']||0],
-        backgroundColor:['#d8f3dc','#95d5b2','#52b788','#2d6a4f','#1b4332'],
-        borderRadius:6,borderSkipped:false
+  charts['d'] = new Chart(document.getElementById('ch-daily').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['0', '1–5', '6–10', '11–20', '21–40'],
+      datasets: [{
+        data: [agg.bins['0'], agg.bins['1-5'], agg.bins['6-10'], agg.bins['11-20'], agg.bins['21-40']],
+        backgroundColor: ['#d8f3dc','#95d5b2','#52b788','#2d6a4f','#1b4332'],
+        borderRadius: 6, borderSkipped: false
       }]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
       scales:{
-        x:{grid:{display:false},ticks:{font:{size:11},color:'#8a9490'}},
-        y:{beginAtZero:true,ticks:{stepSize:1,font:{size:11},color:'#8a9490'},grid:{color:'rgba(26,31,28,0.06)'}}
+        x:{ grid:{display:false}, ticks:{font:{size:11},color:'#8a9490'} },
+        y:{ beginAtZero:true, ticks:{stepSize:1,font:{size:11},color:'#8a9490'}, grid:{color:'rgba(26,31,28,0.06)'} }
       }
     }
   });
 
-  // ── Chart 2: Use cases
+  /* Chart 2: use cases */
   killChart('u');
-  const uc=d.useCases||{};
-  const ucKeys=Object.keys(uc).sort((a,b)=>uc[b]-uc[a]).slice(0,8);
-  const ucVals=ucKeys.map(k=>uc[k]);
-  const ctxU=document.getElementById('ch-uses').getContext('2d');
-  charts['u']=new Chart(ctxU,{
-    type:'bar',
-    data:{
-      labels:ucKeys.length?ucKeys:['No data yet'],
-      datasets:[{
-        data:ucVals.length?ucVals:[0],
-        backgroundColor:'#52b788',
-        borderRadius:5,borderSkipped:false
+  const ucSorted = Object.entries(agg.useCases).sort((a,b) => b[1]-a[1]).slice(0, 8);
+  charts['u'] = new Chart(document.getElementById('ch-uses').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ucSorted.length ? ucSorted.map(([k]) => k) : ['No data yet'],
+      datasets: [{
+        data: ucSorted.length ? ucSorted.map(([,v]) => v) : [0],
+        backgroundColor: '#52b788',
+        borderRadius: 5, borderSkipped: false
       }]
     },
-    options:{
-      indexAxis:'y',
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
+    options: {
+      indexAxis: 'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
       scales:{
-        x:{beginAtZero:true,ticks:{stepSize:1,font:{size:11},color:'#8a9490'},grid:{color:'rgba(26,31,28,0.06)'}},
-        y:{grid:{display:false},ticks:{font:{size:11},color:'#4a5450'}}
+        x:{ beginAtZero:true, ticks:{stepSize:1,font:{size:11},color:'#8a9490'}, grid:{color:'rgba(26,31,28,0.06)'} },
+        y:{ grid:{display:false}, ticks:{font:{size:11},color:'#4a5450'} }
       }
     }
   });
 
-  // ── Awareness bars
-  const aw=d.envAwareness||{};
-  const awTotal=Object.values(aw).reduce((a,b)=>a+b,0)||1;
-  const awColors=['#d8f3dc','#95d5b2','#52b788','#40916c','#2d6a4f'];
-  const awEl=document.getElementById('aw-bars');
-  awEl.innerHTML='';
-  [1,2,3,4,5].forEach(i=>{
-    const cnt=aw[String(i)]||0;
-    const pct=Math.round(cnt/awTotal*100);
-    awEl.innerHTML+=`<div class="aw-row2">
+  /* Awareness bars */
+  const awTotal  = Object.values(agg.envAw).reduce((a,b) => a+b, 0) || 1;
+  const awColors = ['#d8f3dc','#95d5b2','#52b788','#40916c','#2d6a4f'];
+  const awEl = document.getElementById('aw-bars');
+  awEl.innerHTML = '';
+  [1,2,3,4,5].forEach(i => {
+    const cnt = agg.envAw[String(i)] || 0;
+    const pct = Math.round(cnt / awTotal * 100);
+    awEl.innerHTML += `<div class="aw-row2">
       <div class="aw-num">${i}</div>
       <div class="aw-track"><div class="aw-fill" style="width:${pct}%;background:${awColors[i-1]};">${cnt>0?`<span>${cnt}</span>`:''}</div></div>
       <div class="aw-pct">${pct}%</div>
     </div>`;
   });
 
-  // ── Consent donut
+  /* Consent donut */
   killChart('c');
-  const con=d.consent||{};
-  const cKeys=['Yes — community consent must be legally required','Somewhat — consult them, but no veto power','No — economic decisions belong to gov\'t & companies','Not sure / need more information'];
-  const cLabels=['Yes — legally required','Somewhat — consult only','No — gov\'t decides','Not sure'];
-  const cData=cKeys.map(k=>con[k]||0);
-  const cColors=['#2d6a4f','#52b788','#e07c24','#b7dfc8'];
-  const ctxC=document.getElementById('ch-consent').getContext('2d');
-  charts['c']=new Chart(ctxC,{
-    type:'doughnut',
-    data:{labels:cLabels,datasets:[{data:cData,backgroundColor:cColors,borderWidth:0,hoverOffset:3}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}
+  const cKeys   = ['Yes — community consent must be legally required','Somewhat — consult them, but no veto power',"No — economic decisions belong to gov't & companies",'Not sure / need more information'];
+  const cLabels = ['Yes — legally required','Somewhat — consult only','No — gov\'t decides','Not sure'];
+  const cData   = cKeys.map(k => agg.conMap[k] || 0);
+  const cColors = ['#2d6a4f','#52b788','#e07c24','#b7dfc8'];
+  charts['c'] = new Chart(document.getElementById('ch-consent').getContext('2d'), {
+    type: 'doughnut',
+    data: { labels: cLabels, datasets: [{ data: cData, backgroundColor: cColors, borderWidth: 0, hoverOffset: 3 }] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'60%' }
   });
-  const legEl=document.getElementById('consent-leg');
-  legEl.innerHTML='';
-  cLabels.forEach((lbl,i)=>{
-    legEl.innerHTML+=`<div class="dl-row"><div class="dl-dot" style="background:${cColors[i]}"></div><span>${lbl}</span><span class="dl-cnt">${cData[i]}</span></div>`;
-  });
+  document.getElementById('consent-leg').innerHTML = cLabels.map((lbl, i) =>
+    `<div class="dl-row"><div class="dl-dot" style="background:${cColors[i]}"></div><span>${lbl}</span><span class="dl-cnt">${cData[i]}</span></div>`
+  ).join('');
 
-  // ── Word cloud
-  const words=d.words||[];
-  const wcEl=document.getElementById('wordcloud');
-  wcEl.innerHTML='';
-  const freq={};
-  words.forEach(w=>{ if(w){ const k=w.toLowerCase().trim(); freq[k]=(freq[k]||0)+1; } });
-  const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,28);
-  const maxF=sorted.length?sorted[0][1]:1;
-  if(!sorted.length){ wcEl.innerHTML='<p class="r-empty">No words submitted yet.</p>'; return; }
-  sorted.forEach(([word,count],idx)=>{
-    const size=Math.round(13+(count/maxF)*28);
-    const span=document.createElement('span');
-    span.className='wc-word';
-    span.textContent=word;
-    span.style.fontSize=size+'px';
-    span.style.animationDelay=(idx*35)+'ms';
+  /* Word cloud */
+  const wcEl = document.getElementById('wordcloud');
+  wcEl.innerHTML = '';
+  const freq   = {};
+  agg.words.forEach(w => { if (w) freq[w] = (freq[w] || 0) + 1; });
+  const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0, 28);
+  const maxF   = sorted.length ? sorted[0][1] : 1;
+  if (!sorted.length) { wcEl.innerHTML = '<p class="r-empty">No words submitted yet.</p>'; return; }
+  sorted.forEach(([word, count], idx) => {
+    const span = document.createElement('span');
+    span.className       = 'wc-word';
+    span.textContent     = word;
+    span.style.fontSize  = Math.round(13 + (count / maxF) * 28) + 'px';
+    span.style.animationDelay = (idx * 35) + 'ms';
     wcEl.appendChild(span);
   });
 }
 
+/* ── Load from Firebase ── */
+async function loadResults() {
+  const errEl = document.getElementById('r-err');
+  errEl.style.display = 'none';
+  try {
+    const res = await fetch(FIREBASE_URL + DB_PATH + '.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    renderResults(aggregate(raw));
+  } catch (err) {
+    console.error(err);
+    errEl.style.display = 'block';
+    errEl.textContent   = '⚠ Could not load results. Check your connection and try Refresh.';
+  }
+}
+
+/* ── Auto-poll every 5 s while S5 is visible ── */
+let pollTimer = null;
+function startPolling() {
+  if (pollTimer) return;
+  pollTimer = setInterval(() => {
+    if (document.getElementById('s5').classList.contains('active')) {
+      loadResults();
+    } else {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }, 5000);
+}
+
+/* ── Init ── */
 updateS0();
 </script>
 </body>
