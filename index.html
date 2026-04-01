@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your AI Footprint — Activity 1</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
   --ink:     #1a1f1c;
@@ -116,42 +117,80 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
 .eq-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
 .eq-body { font-size:13px; color:var(--ink2); line-height:1.45; }
 .eq-body strong { color:var(--ink); font-weight:500; }
-.submit-status {
-  margin-top: 10px;
-  font-size: 13px;
-  text-align: center;
-  min-height: 20px;
-  transition: all 0.3s;
-  border-radius: 8px;
-  padding: 0;
-}
-.submit-status.sending {
-  color: var(--ink3);
-  padding: 8px;
-  background: var(--paper2);
-}
-.submit-status.success {
-  color: var(--accent);
-  padding: 8px;
-  background: #eef7f2;
-  border: 1px solid #b7dfc8;
-}
-.submit-status.error {
-  color: var(--warn);
-  padding: 8px;
-  background: #fef3e8;
-  border: 1px solid #f5cfa0;
-}
-.source-note { font-size:11px; color:var(--ink3); line-height:1.65; border-top:1px solid var(--line); padding-top:1rem; margin-top:1rem; font-style:italic; }
+.submit-status { text-align:center; padding:0.75rem; border-radius:10px; font-size:13px; margin-top:10px; display:none; }
+.submit-status.sending { display:block; background:var(--paper2); color:var(--ink3); }
+.submit-status.success { display:block; background:#d8f0e4; color:#1a5c38; }
+.submit-status.error   { display:block; background:#fad9d0; color:#7a1f0a; }
 .scale-row { display:flex; gap:5px; margin:0.75rem 0 0.4rem; }
 .scale-btn { flex:1; height:42px; background:var(--paper); border:1px solid var(--line); border-radius:9px; font-size:14px; font-weight:500; color:var(--ink3); font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.15s; }
 .scale-btn:hover { border-color:var(--accent2); color:var(--ink); }
 .scale-btn.sel   { background:#eef7f2; border-color:var(--accent); color:var(--accent); }
 .scale-ends { display:flex; justify-content:space-between; font-size:10.5px; color:var(--ink3); }
-.submit-status { text-align:center; padding:0.75rem; border-radius:10px; font-size:13px; margin-top:10px; display:none; }
-.submit-status.sending { display:block; background:var(--paper2); color:var(--ink3); }
-.submit-status.success { display:block; background:#d8f0e4; color:#1a5c38; }
-.submit-status.error   { display:block; background:#fad9d0; color:#7a1f0a; }
+
+/* ── CLASS RESULTS (S5) ── */
+.results-eyebrow {
+  font-size:11px; font-weight:500; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--accent);
+  margin-bottom:0.6rem; display:flex; align-items:center; gap:8px;
+}
+.results-eyebrow::after { content:''; flex:1; height:1px; background:var(--accent2); opacity:0.4; }
+.results-title {
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(28px,8vw,38px); font-weight:400;
+  line-height:1.1; letter-spacing:-0.02em;
+  color:var(--ink); margin-bottom:1.5rem;
+}
+.results-title em { font-style:italic; color:var(--accent); }
+.resp-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+.resp-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:#eef7f2; border:1px solid #b7dfc8;
+  border-radius:20px; padding:4px 14px;
+  font-size:12px; color:var(--accent); font-weight:500;
+}
+.resp-badge strong { font-family:'Instrument Serif',serif; font-size:18px; line-height:1; }
+.refresh-btn {
+  display:flex; align-items:center; gap:5px;
+  padding:0.6rem 1rem; background:transparent;
+  border:1px solid var(--line); border-radius:10px;
+  font-family:'DM Sans',sans-serif; font-size:12.5px;
+  color:var(--ink3); cursor:pointer; transition:all 0.15s;
+}
+.refresh-btn:hover { border-color:var(--accent); color:var(--accent); }
+.r-stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
+.r-stat { background:#fff; border:1px solid var(--line); border-radius:13px; padding:0.9rem 0.8rem; text-align:center; }
+.r-stat-val { font-family:'Instrument Serif',serif; font-size:28px; color:var(--accent); line-height:1; }
+.r-stat-lbl { font-size:10px; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink3); margin-top:4px; }
+.chart-card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:1.25rem 1.25rem 1.1rem; margin-bottom:12px; }
+.chart-eyebrow { font-size:10.5px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.85rem; }
+
+/* awareness bars */
+.aw-bars { display:flex; flex-direction:column; gap:7px; }
+.aw-row2 { display:flex; align-items:center; gap:8px; }
+.aw-num { font-size:11px; color:var(--ink3); width:14px; flex-shrink:0; text-align:right; }
+.aw-track { flex:1; height:26px; background:var(--paper); border-radius:6px; overflow:hidden; }
+.aw-fill { height:100%; border-radius:6px; transition:width 0.9s cubic-bezier(.25,.8,.25,1); display:flex; align-items:center; padding:0 8px; min-width:0; }
+.aw-fill span { font-size:11px; font-weight:500; color:#fff; white-space:nowrap; }
+.aw-pct { font-size:11px; color:var(--ink3); width:32px; text-align:right; }
+
+/* consent legend */
+.donut-wrap { display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; }
+.donut-legend { display:flex; flex-direction:column; gap:6px; flex:1; min-width:160px; }
+.dl-row { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink2); }
+.dl-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.dl-cnt { margin-left:auto; font-weight:500; color:var(--ink); font-size:12px; }
+
+/* word cloud */
+.word-cloud { display:flex; flex-wrap:wrap; gap:8px; padding:0.25rem 0; align-items:baseline; }
+.wc-word {
+  font-family:'Instrument Serif',serif; color:var(--accent);
+  line-height:1.1; opacity:0;
+  animation:fadeWord 0.5s ease forwards;
+}
+@keyframes fadeWord { to { opacity:1; } }
+
+.r-empty { font-size:13px; color:var(--ink3); font-style:italic; text-align:center; padding:1.5rem 0; }
+.r-error-box { background:#fad9d0; border:1px solid #f5b8a0; border-radius:12px; padding:0.9rem 1.1rem; font-size:13px; color:#7a1f0a; margin-bottom:12px; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -286,7 +325,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
     <div class="submit-status" id="submitStatus"></div>
   </div>
 
-  <!-- S4: Results -->
+  <!-- S4: Personal Results -->
   <div class="screen" id="s4">
     <div class="result-hero">
       <div class="hero-num" id="rnum">2.5</div>
@@ -320,17 +359,79 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
       <div class="ctx-label">Scale this up</div>
       A single large data center consumes as much electricity as 80,000 homes. By 2030, US data centers could contribute to ~1,300 deaths per year from air pollution — disproportionately in communities of color.
     </div>
-    <p class="source-note">
+    <p style="font-size:11px;color:var(--ink3);line-height:1.65;border-top:1px solid var(--line);padding-top:1rem;margin-top:1rem;font-style:italic;">
       Estimates: ~0.5 g CO₂ per text query (avg GPT-4 class models), ~10 mL water per query for cooling. Image generation 10–40× higher. Sources: Goldman Sachs (2024), IEA (2024), Luccioni et al. (2023), techpolicy.press (2025).
     </p>
+    <div class="nav" style="margin-top:1.5rem;">
+      <button class="btn-next" style="background:var(--ink);" onclick="goResults()">See class results →</button>
+    </div>
   </div>
 
-</div>
+  <!-- S5: CLASS RESULTS ──────────────────────────── -->
+  <div class="screen" id="s5">
+
+    <div style="padding:2.5rem 0 1.5rem;">
+      <div class="results-eyebrow">Class Dashboard &nbsp;·&nbsp; Live</div>
+      <div class="results-title">How the <em>class</em><br>responded</div>
+    </div>
+
+    <div id="r-err" class="r-error-box" style="display:none;"></div>
+
+    <div class="resp-row">
+      <span class="resp-badge"><strong id="rc-n">—</strong>&nbsp;responses</span>
+      <button class="refresh-btn" onclick="loadResults()">↻ Refresh</button>
+    </div>
+
+    <!-- 3 top-line stats -->
+    <div class="r-stat-row">
+      <div class="r-stat"><div class="r-stat-val" id="rc-daily">—</div><div class="r-stat-lbl">avg uses/day</div></div>
+      <div class="r-stat"><div class="r-stat-val" id="rc-co2">—</div><div class="r-stat-lbl">avg CO₂ g</div></div>
+      <div class="r-stat"><div class="r-stat-val" id="rc-water">—</div><div class="r-stat-lbl">avg water L</div></div>
+    </div>
+
+    <!-- Chart 1: daily uses bins -->
+    <div class="chart-card">
+      <div class="chart-eyebrow">Daily AI uses — class distribution</div>
+      <div style="position:relative;height:170px;"><canvas id="ch-daily"></canvas></div>
+    </div>
+
+    <!-- Chart 2: use cases -->
+    <div class="chart-card">
+      <div class="chart-eyebrow">What does the class use AI for?</div>
+      <div style="position:relative;height:210px;"><canvas id="ch-uses"></canvas></div>
+    </div>
+
+    <!-- Awareness bars -->
+    <div class="chart-card">
+      <div class="chart-eyebrow">Environmental awareness (1 = never → 5 = often)</div>
+      <div class="aw-bars" id="aw-bars" style="margin-top:4px;"></div>
+    </div>
+
+    <!-- Consent donut -->
+    <div class="chart-card">
+      <div class="chart-eyebrow">Should communities have formal say?</div>
+      <div class="donut-wrap">
+        <div style="width:130px;height:130px;flex-shrink:0;"><canvas id="ch-consent"></canvas></div>
+        <div class="donut-legend" id="consent-leg"></div>
+      </div>
+    </div>
+
+    <!-- Word cloud -->
+    <div class="chart-card">
+      <div class="chart-eyebrow">One-word reactions — class word cloud</div>
+      <div class="word-cloud" id="wordcloud"></div>
+      <p style="font-size:11px;color:var(--ink3);margin-top:10px;font-style:italic;">Larger = more students used that word</p>
+    </div>
+
+    <div class="nav" style="margin-top:0.5rem;">
+      <button class="btn-back" onclick="go(4)">← My results</button>
+    </div>
+  </div>
+
+</div><!-- /page -->
 
 <script>
-// ── !! 在这里粘贴你的 Apps Script Web App URL !! ──────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbytCX4PGfQHmlKAAZRwAAa4jFgefaoNEDKbgmHGQn5IE_6Hc3jj1NlGGw86DYFDUMY/exec';
-// ──────────────────────────────────────────────────────────────────
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwhp9OvMuevcp6ziprXCpdgdG4Ygk0gNf9iU137yMkEBc7dkwFCfDx4SL_ILRg5T_YiBw/exec';
 
 const equivTable = [
   { max:2,        icon:'🔋', txt:'<strong>Charging your phone</strong> for ~10 minutes' },
@@ -341,15 +442,12 @@ const equivTable = [
   { max:120,      icon:'🚗', txt:'<strong>Driving a car</strong> about 0.5 km' },
   { max:Infinity, icon:'✈️', txt:'<strong>A short flight</strong> segment equivalent' }
 ];
-
 function co2(q){ return Math.round(q*0.5*10)/10; }
-
 function level(g){
   if(g<8)  return{label:'low',     cls:'pill-low', color:'var(--accent)', strip:'var(--accent2)'};
   if(g<25) return{label:'moderate',cls:'pill-med', color:'var(--warn)',   strip:'var(--warn)'};
   return        {label:'high',     cls:'pill-high',color:'var(--danger)', strip:'var(--danger)'};
 }
-
 function equiv(g){ return equivTable.find(e=>g<=e.max); }
 
 function updateS0(){
@@ -365,7 +463,6 @@ function updateS0(){
   document.getElementById('equiv0').style.borderLeftColor=lv.strip;
   document.getElementById('eqtext0').innerHTML=eq.icon+'&nbsp;'+eq.txt.replace(/<[^>]+>/g,'');
 }
-
 function pickChoice(id,btn){
   document.querySelectorAll('#'+id+' .choice').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
@@ -375,25 +472,23 @@ function pickScale(id,btn){
   document.querySelectorAll('#'+id+' .scale-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
 }
-
 function collectData(){
   const daily=+document.getElementById('sl0').value;
   const weekly=+document.getElementById('sl1').value;
-  const gDay=co2(daily); const gWeek=co2(weekly);
+  const gDay=co2(daily);
   const useCases=[...document.querySelectorAll('#usegrid .cb-btn.sel')].map(b=>b.textContent.trim());
   const envBtn=document.querySelector('#envscale .scale-btn.sel');
   const consentBtn=document.querySelector('#consent .choice.sel');
   return{
-    dailyUses:daily, dailyCO2:gDay, weeklyUses:weekly, weeklyCO2:gWeek,
+    dailyUses:daily, dailyCO2:gDay, weeklyUses:weekly, weeklyCO2:co2(weekly),
     useCases,
-    envAwareness: envBtn ? envBtn.textContent.trim() : '',
-    communityConsent: consentBtn ? consentBtn.textContent.replace(/^[A-D]\s*/,'').trim() : '',
+    envAwareness: envBtn?envBtn.textContent.trim():'',
+    communityConsent: consentBtn?consentBtn.textContent.replace(/^[A-D]\s*/,'').trim():'',
     oneWord: document.getElementById('wordinput').value.trim(),
     annualCO2: Math.round(gDay*365/100)/10,
     waterToday: Math.round(daily*10)/100,
   };
 }
-
 function submitAndContinue(){
   const btn=document.getElementById('submitBtn');
   const status=document.getElementById('submitStatus');
@@ -402,18 +497,15 @@ function submitAndContinue(){
   status.textContent='Saving your response…';
   const d=collectData();
   const params=new URLSearchParams({
-    dailyUses:    d.dailyUses,
-    dailyCO2:     d.dailyCO2,
-    weeklyUses:   d.weeklyUses,
-    weeklyCO2:    d.weeklyCO2,
-    useCases:     (d.useCases||[]).join(', '),
-    envAwareness: d.envAwareness,
-    communityConsent: d.communityConsent,
-    oneWord:      d.oneWord,
-    annualCO2:    d.annualCO2,
-    waterToday:   d.waterToday,
+    dailyUses:d.dailyUses, dailyCO2:d.dailyCO2,
+    weeklyUses:d.weeklyUses, weeklyCO2:d.weeklyCO2,
+    useCases:(d.useCases||[]).join(', '),
+    envAwareness:d.envAwareness,
+    communityConsent:d.communityConsent,
+    oneWord:d.oneWord,
+    annualCO2:d.annualCO2,
+    waterToday:d.waterToday,
   });
-  // Use Image() to bypass CORS — most reliable method
   const img=new Image();
   img.onload=img.onerror=function(){
     status.className='submit-status success';
@@ -422,10 +514,8 @@ function submitAndContinue(){
     btn.disabled=false;
   };
   img.src=SHEET_URL+'?'+params.toString();
-  // Fallback: go to results after 3s regardless
   setTimeout(()=>{ if(btn.disabled){ go(4); } },3000);
 }
-
 function buildResults(){
   const daily=+document.getElementById('sl0').value;
   const weekly=+document.getElementById('sl1').value;
@@ -442,23 +532,158 @@ function buildResults(){
   document.getElementById('rclass').textContent=Math.round(gDay*20*10)/10+' g';
   const list=document.getElementById('equivlist'); list.innerHTML='';
   const eq=equiv(gDay);
-  [
-    {icon:eq.icon, body:eq.txt+' — that\'s your <strong>daily</strong> AI use.'},
-    {icon:'💧',    body:'Your queries used <strong>'+water+' L water</strong> for data center cooling.'},
-    {icon:'🏙️',   body:'If 20 classmates used AI at your rate: <strong>'+Math.round(gDay*20*10)/10+' g CO₂</strong> today combined.'}
+  [{icon:eq.icon,body:eq.txt+' — that\'s your <strong>daily</strong> AI use.'},
+   {icon:'💧',body:'Your queries used <strong>'+water+' L water</strong> for data center cooling.'},
+   {icon:'🏙️',body:'If 20 classmates used AI at your rate: <strong>'+Math.round(gDay*20*10)/10+' g CO₂</strong> today combined.'}
   ].forEach(item=>{
     list.innerHTML+=`<div class="eq-row"><div class="eq-icon">${item.icon}</div><div class="eq-body">${item.body}</div></div>`;
   });
 }
-
 function go(n){
   if(n===4) buildResults();
   document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n));
   document.querySelectorAll('.prog-seg').forEach((d,i)=>{
-    d.classList.toggle('done',i<n);
-    d.classList.toggle('active',i===n);
+    d.classList.toggle('done',i<n && i<5);
+    d.classList.toggle('active',i===n && i<5);
   });
   window.scrollTo({top:0,behavior:'smooth'});
+}
+function goResults(){ go(5); loadResults(); }
+
+// ── CLASS RESULTS ──────────────────────────────────────────────────
+const charts={};
+function killChart(id){ if(charts[id]){charts[id].destroy();delete charts[id];} }
+
+async function loadResults(){
+  document.getElementById('r-err').style.display='none';
+  try {
+    const res = await fetch(SHEET_URL+'?action=getResults');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    renderResults(data);
+  } catch(e) {
+    const errEl=document.getElementById('r-err');
+    errEl.style.display='block';
+    errEl.innerHTML='⚠ Could not fetch results ('+e.message+'). <br>Make sure you\'ve updated the Apps Script — see instructions below.';
+    renderResults({});
+  }
+}
+
+function renderResults(d){
+  const n   = d.count          || 0;
+  const avgD= d.avgDailyUses   || 0;
+  const avgC= d.avgDailyCO2    || 0;
+  const avgW= d.avgWater       || 0;
+
+  document.getElementById('rc-n').textContent     = n;
+  document.getElementById('rc-daily').textContent = avgD.toFixed(1);
+  document.getElementById('rc-co2').textContent   = avgC.toFixed(1)+'g';
+  document.getElementById('rc-water').textContent = avgW.toFixed(2)+'L';
+
+  // ── Chart 1: Daily uses distribution
+  killChart('d');
+  const bins=d.dailyBins||{};
+  const ctxD=document.getElementById('ch-daily').getContext('2d');
+  charts['d']=new Chart(ctxD,{
+    type:'bar',
+    data:{
+      labels:['0','1–5','6–10','11–20','21–40'],
+      datasets:[{
+        data:[bins['0']||0,bins['1-5']||0,bins['6-10']||0,bins['11-20']||0,bins['21-40']||0],
+        backgroundColor:['#d8f3dc','#95d5b2','#52b788','#2d6a4f','#1b4332'],
+        borderRadius:6,borderSkipped:false
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:11},color:'#8a9490'}},
+        y:{beginAtZero:true,ticks:{stepSize:1,font:{size:11},color:'#8a9490'},grid:{color:'rgba(26,31,28,0.06)'}}
+      }
+    }
+  });
+
+  // ── Chart 2: Use cases
+  killChart('u');
+  const uc=d.useCases||{};
+  const ucKeys=Object.keys(uc).sort((a,b)=>uc[b]-uc[a]).slice(0,8);
+  const ucVals=ucKeys.map(k=>uc[k]);
+  const ctxU=document.getElementById('ch-uses').getContext('2d');
+  charts['u']=new Chart(ctxU,{
+    type:'bar',
+    data:{
+      labels:ucKeys.length?ucKeys:['No data yet'],
+      datasets:[{
+        data:ucVals.length?ucVals:[0],
+        backgroundColor:'#52b788',
+        borderRadius:5,borderSkipped:false
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{beginAtZero:true,ticks:{stepSize:1,font:{size:11},color:'#8a9490'},grid:{color:'rgba(26,31,28,0.06)'}},
+        y:{grid:{display:false},ticks:{font:{size:11},color:'#4a5450'}}
+      }
+    }
+  });
+
+  // ── Awareness bars
+  const aw=d.envAwareness||{};
+  const awTotal=Object.values(aw).reduce((a,b)=>a+b,0)||1;
+  const awColors=['#d8f3dc','#95d5b2','#52b788','#40916c','#2d6a4f'];
+  const awEl=document.getElementById('aw-bars');
+  awEl.innerHTML='';
+  [1,2,3,4,5].forEach(i=>{
+    const cnt=aw[String(i)]||0;
+    const pct=Math.round(cnt/awTotal*100);
+    awEl.innerHTML+=`<div class="aw-row2">
+      <div class="aw-num">${i}</div>
+      <div class="aw-track"><div class="aw-fill" style="width:${pct}%;background:${awColors[i-1]};">${cnt>0?`<span>${cnt}</span>`:''}</div></div>
+      <div class="aw-pct">${pct}%</div>
+    </div>`;
+  });
+
+  // ── Consent donut
+  killChart('c');
+  const con=d.consent||{};
+  const cKeys=['Yes — community consent must be legally required','Somewhat — consult them, but no veto power','No — economic decisions belong to gov\'t & companies','Not sure / need more information'];
+  const cLabels=['Yes — legally required','Somewhat — consult only','No — gov\'t decides','Not sure'];
+  const cData=cKeys.map(k=>con[k]||0);
+  const cColors=['#2d6a4f','#52b788','#e07c24','#b7dfc8'];
+  const ctxC=document.getElementById('ch-consent').getContext('2d');
+  charts['c']=new Chart(ctxC,{
+    type:'doughnut',
+    data:{labels:cLabels,datasets:[{data:cData,backgroundColor:cColors,borderWidth:0,hoverOffset:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}
+  });
+  const legEl=document.getElementById('consent-leg');
+  legEl.innerHTML='';
+  cLabels.forEach((lbl,i)=>{
+    legEl.innerHTML+=`<div class="dl-row"><div class="dl-dot" style="background:${cColors[i]}"></div><span>${lbl}</span><span class="dl-cnt">${cData[i]}</span></div>`;
+  });
+
+  // ── Word cloud
+  const words=d.words||[];
+  const wcEl=document.getElementById('wordcloud');
+  wcEl.innerHTML='';
+  const freq={};
+  words.forEach(w=>{ if(w){ const k=w.toLowerCase().trim(); freq[k]=(freq[k]||0)+1; } });
+  const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,28);
+  const maxF=sorted.length?sorted[0][1]:1;
+  if(!sorted.length){ wcEl.innerHTML='<p class="r-empty">No words submitted yet.</p>'; return; }
+  sorted.forEach(([word,count],idx)=>{
+    const size=Math.round(13+(count/maxF)*28);
+    const span=document.createElement('span');
+    span.className='wc-word';
+    span.textContent=word;
+    span.style.fontSize=size+'px';
+    span.style.animationDelay=(idx*35)+'ms';
+    wcEl.appendChild(span);
+  });
 }
 
 updateS0();
