@@ -431,7 +431,7 @@ input[type=range]::-webkit-slider-thumb:active { transform:scale(1.15); }
 </div><!-- /page -->
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwhp9OvMuevcp6ziprXCpdgdG4Ygk0gNf9iU137yMkEBc7dkwFCfDx4SL_ILRg5T_YiBw/exec';
+const SHEET_URL = 'https://script.google.com/macros/library/d/17AwFEust8lx9Y3tzt9RdqdW-y5Qfawsm1IPtZbxeThhlKTUOrY5z5V5x/2';
 
 const equivTable = [
   { max:2,        icon:'🔋', txt:'<strong>Charging your phone</strong> for ~10 minutes' },
@@ -556,19 +556,27 @@ function killChart(id){ if(charts[id]){charts[id].destroy();delete charts[id];} 
 
 async function loadResults(){
   document.getElementById('r-err').style.display='none';
-  try {
-    const res = await fetch(SHEET_URL+'?action=getResults');
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    renderResults(data);
-  } catch(e) {
-    const errEl=document.getElementById('r-err');
-    errEl.style.display='block';
-    errEl.innerHTML='⚠ Could not fetch results ('+e.message+'). <br>Make sure you\'ve updated the Apps Script — see instructions below.';
-    renderResults({});
-  }
+  return new Promise(function(resolve){
+    var cbName = 'isp_cb_'+Date.now();
+    var script = document.createElement('script');
+    var timer = setTimeout(function(){
+      var errEl=document.getElementById('r-err');
+      errEl.style.display='block';
+      errEl.textContent='⚠ 无法加载结果，请检查 Apps Script 是否已重新部署。';
+      renderResults({});
+      resolve();
+    }, 6000);
+    window[cbName] = function(data){
+      clearTimeout(timer);
+      delete window[cbName];
+      document.body.removeChild(script);
+      renderResults(data);
+      resolve();
+    };
+    script.src = SHEET_URL + '?action=getResults&callback=' + cbName;
+    document.body.appendChild(script);
+  });
 }
-
 function renderResults(d){
   const n   = d.count          || 0;
   const avgD= d.avgDailyUses   || 0;
